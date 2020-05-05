@@ -13,6 +13,7 @@ module.exports = {
 	//	Return an user on database given email
 	async index(req, res) {
 		const { email } = req.body;
+		
 		await users.findOne({ email }).then((user) => {
 			if(user) {
 				return res.status(200).json(user);

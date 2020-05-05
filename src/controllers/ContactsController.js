@@ -12,13 +12,9 @@ module.exports = {
 		const userId = req.headers.authorization;
 		const contactId = req.params.id;
 		
-		await contacts.findById(contactId).then((contact) => {
+		await contacts.findOne({ _id: contactId, idUser: userId }).then((contact) => {
 			if(contact) {
-				if(contact.idUser !== userId) {
-					return res.status(401).send("You don't have permission to access this page!");
-				} else {
-					return res.status(200).json(contact);
-				}
+				return res.status(200).json(contact);
 			} else {
 				return res.status(400).send("Contact not found!");
 			}
@@ -79,7 +75,7 @@ module.exports = {
 			if(response) {
 				return res.status(200).json(response);
 			} else {
-				return res.status(400).send("No contacts found for the user!");
+				return res.status(400).send("Contacts not found for the user!");
 			}
 		}).catch((error) => {
 			return res.status(500).send(error);
@@ -104,7 +100,7 @@ module.exports = {
 			if(response) {
 				return res.status(200).json(response);
 			} else {
-				return res.status(400).send("No contacts found for the user!");
+				return res.status(400).send("Contacts not found for the search!");
 			}
 		}).catch((error) => {
 			return res.status(500).send(error);
