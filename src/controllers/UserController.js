@@ -139,17 +139,5 @@ module.exports = {
 		}).catch((error) => {
 			return res.status(500).send(error);
 		});
-	},
-	//	Return all users on database
-	async all(req, res) {
-		await users.find().then((response) => {
-			if(response) {
-				return res.status(200).json(response);
-			} else {
-				return res.status(400).send("No user found!");
-			}
-		}).catch((error) => {
-			return res.status(500).send(error);
-		});
 	}
 };
