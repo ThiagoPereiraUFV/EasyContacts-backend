@@ -7,7 +7,7 @@ const contacts = mongoose.model("Contatos");
 
 //	Exporting Contacts features
 module.exports = {
-	//	Return a specific contact given id
+	//	Return a specific contact given id from current user
 	async index(req, res) {
 		const userId = req.headers.authorization;
 		const contactId = req.params.id;
@@ -40,7 +40,7 @@ module.exports = {
 			return res.status(500).send(error);
 		});
 	},
-	//	Update a specific contact to current user
+	//	Update a specific contact from current user
 	async update(req, res) {
 		const userId = req.headers.authorization;
 		const contactId = req.params.id;
@@ -56,7 +56,7 @@ module.exports = {
 			return res.status(500).send(error);
 		});
 	},
-	//	Delete a specific contact
+	//	Delete a specific contact from current user
 	async delete(req, res) {
 		const userId = req.headers.authorization;
 		const contactId = req.params.id;
@@ -93,10 +93,10 @@ module.exports = {
 		await contacts.find({ 
 			idUser: userId, 
 			$or: [{
-				nome: {
+				name: {
 					$regex: '.*' + search_query + '.*' 
 				}}, {
-				sobrenome: {
+				surname: {
 					$regex: '.*' + search_query + '.*' 
 				}}
 			]

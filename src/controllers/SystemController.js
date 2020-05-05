@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
-//	Loading Users collection from database
+//	Loading Users and Contacts collections from database
 require("../models/User");
 require("../models/Contact");
 const users = mongoose.model("Usuarios");

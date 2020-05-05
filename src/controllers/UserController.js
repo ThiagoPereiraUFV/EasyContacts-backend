@@ -13,9 +13,9 @@ module.exports = {
 	//	Return an user on database given email
 	async index(req, res) {
 		const { email } = req.body;
-		await users.findOne({ email }).then((response) => {
-			if(response) {
-				return res.status(200).json(response);
+		await users.findOne({ email }).then((user) => {
+			if(user) {
+				return res.status(200).json(user);
 			} else {
 				return res.status(400).send("No user found!");
 			}
@@ -86,6 +86,8 @@ module.exports = {
 								}).catch((error) => {
 									return res.status(500).send(error.message);
 								});
+							}).catch((error) => {
+								return res.status(500).send(error.message);
 							});
 						} else {
 							return res.status(400).send("Old password don't match, try again!");

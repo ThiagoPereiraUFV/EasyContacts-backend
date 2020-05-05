@@ -31,7 +31,7 @@ routes.post("/contacts", ContactsController.create);
 routes.put("/contacts/:id", ContactsController.update);
 routes.delete("/contacts/:id", ContactsController.delete);
 routes.get("/contacts", ContactsController.user);
-routes.get("/contacts/search", ContactsController.search);
+routes.get("/contactsSearch", ContactsController.search);
 
 //  Development routes - caution
 routes.get("/allUsers", SystemController.allUsers);
