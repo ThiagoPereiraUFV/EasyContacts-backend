@@ -10,9 +10,10 @@ const contacts = mongoose.model("Contatos");
 
 //	Exporting User features
 module.exports = {
-	//	Return all users on database
+	//	Return an user on database given email
 	async index(req, res) {
-		await users.find().then((response) => {
+		const { email } = req.body;
+		await users.findOne({ email }).then((response) => {
 			if(response) {
 				return res.status(200).json(response);
 			} else {
@@ -57,7 +58,7 @@ module.exports = {
 			});
 		}
 	},
-	//	Update an existing user
+	//	Update current user on database
 	async update(req, res) {
 		const userId = req.headers.authorization;
 		const { name, email, passwordO, passwordN } = req.body;
@@ -134,6 +135,18 @@ module.exports = {
 				});
 			} else {
 				return res.status(400).send("User not found!");
+			}
+		}).catch((error) => {
+			return res.status(500).send(error);
+		});
+	},
+	//	Return all users on database
+	async all(req, res) {
+		await users.find().then((response) => {
+			if(response) {
+				return res.status(200).json(response);
+			} else {
+				return res.status(400).send("No user found!");
 			}
 		}).catch((error) => {
 			return res.status(500).send(error);

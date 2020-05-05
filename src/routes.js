@@ -25,11 +25,15 @@ routes.put("/user", UserController.update);
 routes.delete("/user", UserController.delete);
 
 //  Contacts
-routes.get("/contacts", ContactsController.index);
+routes.get("/contacts/:id", ContactsController.index);
 routes.post("/contacts", ContactsController.create);
 routes.put("/contacts/:id", ContactsController.update);
 routes.delete("/contacts/:id", ContactsController.delete);
-routes.get("/contacts/:id", ContactsController.view);
+//routes.get("/contacts", ContactsController.user);
 routes.get("/contactsSearch", ContactsController.search);
+
+//  Development routes
+routes.get("/allUsers", UserController.all);
+//routes.get("/allContacts", ContactsController.all);
 
 module.exports = routes;
