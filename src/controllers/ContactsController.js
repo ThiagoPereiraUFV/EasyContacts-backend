@@ -71,7 +71,7 @@ module.exports = {
 	async user(req, res) {
 		const userId = req.headers.authorization;
 
-		await contacts.find({ idUser: userId }).then((response) => {
+		await contacts.find({ idUser: userId }).sort({ name: "asc", surname: "asc" }).then((response) => {
 			if(response) {
 				return res.status(200).json(response);
 			} else {
@@ -90,13 +90,15 @@ module.exports = {
 			idUser: userId, 
 			$or: [{
 				name: {
-					$regex: '.*' + search_query + '.*' 
+					$regex: '.*' + search_query + '.*',
+					$options: "i"
 				}}, {
 				surname: {
-					$regex: '.*' + search_query + '.*' 
+					$regex: '.*' + search_query + '.*',
+					$options: "i"
 				}}
 			]
-		}).then((response) => {
+		}).sort({ name: "asc", surname: "asc" }).then((response) => {
 			if(response) {
 				return res.status(200).json(response);
 			} else {
