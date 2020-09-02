@@ -2,7 +2,7 @@
 
 Used in this project:
 
-* Back-end framework - NodeJS - https://nodejs.org/
+* Back-end framework - ExpressJS - https://expressjs.com/
 * Database - MongoDB - https://www.mongodb.com/
 * MongoDB database manager - Atlas - https://www.mongodb.com/cloud/atlas
 
