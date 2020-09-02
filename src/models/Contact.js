@@ -6,37 +6,37 @@ const Schema = mongoose.Schema;
 
 //	Defining Contact schema
 const contactSchema = Schema({
-	idUser: {
+	userId: {
 		type: String,
-		require: true
+		required: true
 	},
 	name: {
 		type: String,
-		require: true
+		required: true
 	},
 	surname: {
 		type: String,
-		require: false
+		required: false
 	},
-	telephone: {
+	phone: {
 		type: String,
-		require: false
+		required: false
 	},
 	email: {
 		type: String,
-		require: false
+		required: false
 	},
 	address: {
 		type: String,
-		require: false
+		required: false
 	},
 	annotations: {
 		type: String,
-		require: false
+		required: false
 	},
 	imageName: {
 		type: String,
-		require: false
+		required: false
 	},
 	creationDate: {
 		type: Date,

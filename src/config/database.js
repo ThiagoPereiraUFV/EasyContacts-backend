@@ -13,7 +13,7 @@ const uri = "mongodb+srv://easycontactsadmin:" + process.env.DBPASSWORD + "@easy
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
 	console.log("Connection to database has been established successfully.");
 }).catch((error) => {
-	console.error("Unable to connect to the database:", error);
+	console.error("Unable to connect to the database:\n", error);
 });
 
 //	Exporting database connection
