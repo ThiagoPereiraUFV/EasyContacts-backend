@@ -39,7 +39,7 @@ module.exports = {
 			return res.status(400).send("Invalid name!");
 		}
 
-		if(!email || !email.length || !emailRegEx.teste(email)) {
+		if(!email || !email.length || !emailRegEx.test(email)) {
 			return res.status(400).send("Invalid email!");
 		}
 
@@ -97,7 +97,7 @@ module.exports = {
 			return res.status(400).send("Invalid name!");
 		}
 
-		if(!email || !email.length || !emailRegEx.teste(email)) {
+		if(!email || !email.length || !emailRegEx.test(email)) {
 			return res.status(400).send("Invalid email!");
 		}
 
