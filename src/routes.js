@@ -19,7 +19,7 @@ routes.get("/session", SessionController.index);
 routes.post("/session", SessionController.create);
 
 //  User
-routes.get("/user", UserController.index);
+routes.get("/user/:id", UserController.index);
 routes.post("/user", UserController.create);
 routes.put("/user", UserController.update);
 routes.delete("/user", UserController.delete);
