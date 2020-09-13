@@ -19,7 +19,7 @@ module.exports = {
 		if(!contactId || !contactId.length || !mongoose.Types.ObjectId.isValid(contactId)) {
 			return res.status(400).send("Invalid id!");
 		}
-		
+
 		await contacts.findOne({ _id: contactId, userId }).then((contact) => {
 			if(contact) {
 				return res.status(200).json(contact);
@@ -45,12 +45,12 @@ module.exports = {
 
 		await contacts.create({
 			userId,
-			name,
-			surname,
-			phone,
-			email: email ? email.trim().toLowerCase() : email,
-			address,
-			annotations
+			name: name.trim(),
+			surname: surname ? surname.trim() : null,
+			phone: phone ? phone.trim() : null,
+			email: email ? email.trim().toLowerCase() : null,
+			address: address ? address.trim() : null,
+			annotations: annotations ? annotations.trim() : null
 		}).then((response) => {
 			if(response) {
 				return res.status(201).send("Contact created successfully!");
@@ -81,12 +81,12 @@ module.exports = {
 
 		await contacts.findOneAndUpdate({ _id: contactId, userId }, {
 			userId,
-			name,
-			surname,
-			phone,
-			email: email ? email.trim().toLowerCase() : email,
-			address,
-			annotations
+			name: name.trim(),
+			surname: surname ? surname.trim() : null,
+			phone: phone ? phone.trim() : null,
+			email: email ? email.trim().toLowerCase() : null,
+			address: address ? address.trim() : null,
+			annotations: annotations ? annotations.trim() : null
 		}).then((response) => {
 			if(response) {
 				return res.status(200).send("The contact have been updated!");
@@ -129,7 +129,7 @@ module.exports = {
 		}
 
 		await contacts.find({ userId }).sort({
-			name: "asc", 
+			name: "asc",
 			surname: "asc"
 		}).then((response) => {
 			if(response && response.length) {
@@ -150,8 +150,12 @@ module.exports = {
 			return res.status(400).send("Invalid id!");
 		}
 
-		await contacts.find({ 
-			userId, 
+		if(!search_query || !search_query.length) {
+			return res.status(400).send("Invalid search!");
+		}
+
+		await contacts.find({
+			userId,
 			$or: [
 				{
 					name: {
@@ -180,9 +184,9 @@ module.exports = {
 					}
 				}
 			]
-		}).sort({ 
-			name: "asc", 
-			surname: "asc" 
+		}).sort({
+			name: "asc",
+			surname: "asc"
 		}).then((response) => {
 			if(response && response.length) {
 				return res.status(200).json(response);

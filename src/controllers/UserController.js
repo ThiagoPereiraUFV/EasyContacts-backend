@@ -20,7 +20,7 @@ module.exports = {
 		if(!userId || !userId.length || !mongoose.Types.ObjectId.isValid(userId)) {
 			return res.status(400).send("Invalid id!");
 		}
-		
+
 		await users.findById(userId).then((user) => {
 			if(user) {
 				return res.status(200).json(user);
@@ -54,7 +54,7 @@ module.exports = {
 		if(password !== passwordC) {
 			return res.status(400).send("The passwords don't match, try again!");
 		}
-		
+
 		await users.findOne({ email: email.trim().toLowerCase() }).then((response) => {
 			if(response) {
 				return res.status(400).send("This email isn't available, try another!");
@@ -63,10 +63,10 @@ module.exports = {
 					const salt = bcrypt.genSaltSync(10);
 					const hash = bcrypt.hashSync(password, salt);
 
-					users.create({ 
-						name, 
-						email: email.trim().toLowerCase(), 
-						password: hash 
+					users.create({
+						name: email.trim(),
+						email: email.trim().toLowerCase(),
+						password: hash
 					}).then((user) => {
 						if(user) {
 							return res.status(201).json(user);
@@ -104,7 +104,7 @@ module.exports = {
 		await users.findById(userId).then((user) => {
 			if(user) {
 				var hash = "";
-				
+
 				if(passwordN && passwordN.length) {
 					if(!bcrypt.compareSync(passwordO, user.password)) {
 						return res.status(400).send("Old password don't match, try again!");
@@ -120,7 +120,7 @@ module.exports = {
 					hash = user.password;
 				}
 
-				user.name = name;
+				user.name = name.trim();
 				user.email = email.trim().toLowerCase();
 				user.password = hash;
 
@@ -150,7 +150,7 @@ module.exports = {
 
 		await users.findByIdAndDelete(userId).then((user) => {
 			if(user) {
-				contacts.deleteMany({ idUser: user._id }).then(() => {
+				contacts.deleteMany({ userId: user._id }).then(() => {
 					return res.status(200).send("The user and all his contacts have been deleted!");
 				}).catch((error) => {
 					return res.status(500).send(error);
