@@ -140,20 +140,35 @@ module.exports = {
 			return res.status(500).send(error);
 		});
 	},
-	//	Remove current user from database
+	//	Remove current user from database giver correct user password
 	async delete(req, res) {
+		const { password } = req.body;
 		const userId = req.headers.authorization;
 
 		if(!userId || !userId.length || !mongoose.Types.ObjectId.isValid(userId)) {
 			return res.status(400).send("Invalid id!");
 		}
 
-		await users.findByIdAndDelete(userId).then((user) => {
+		if(!password || !password.length) {
+			return res.status(400).send("Invalid password!");
+		}
+
+		await users.findById(userId).then((user) => {
 			if(user) {
-				contacts.deleteMany({ userId: user._id }).then(() => {
-					return res.status(200).send("The user and all his contacts have been deleted!");
-				}).catch((error) => {
-					return res.status(500).send(error);
+				bcrypt.compare(password, user.password).then((match) => {
+					if(match) {
+						contacts.deleteMany({ userId }).then(() => {
+							user.remove().then(() => {
+								return res.status(200).send("The user and all his contacts have been deleted!");
+							}).catch((error) => {
+								return res.status(500).send(error);
+							});
+						}).catch((error) => {
+							return res.status(500).send(error);
+						});
+					} else {
+						return res.status(400).send("Wrong password!");
+					}
 				});
 			} else {
 				return res.status(404).send("User not found!");

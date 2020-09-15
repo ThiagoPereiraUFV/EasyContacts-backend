@@ -23,7 +23,7 @@ routes.get("/user/:id", UserController.index);
 routes.post("/user", UserController.create);
 routes.put("/user", UserController.update);
 routes.delete("/user", UserController.delete);
-routes.get("/allUsers", UserController.all);
+routes.get("/user", UserController.all);
 
 //  Contacts
 routes.get("/contacts/:id", ContactsController.index);
