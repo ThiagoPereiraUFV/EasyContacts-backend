@@ -142,7 +142,7 @@ module.exports = {
 	},
 	//	Remove current user from database giver correct user password
 	async delete(req, res) {
-		const { password } = req.body;
+		const { password } = req.headers;
 		const userId = req.headers.authorization;
 
 		if(!userId || !userId.length || !mongoose.Types.ObjectId.isValid(userId)) {
