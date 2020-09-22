@@ -18,6 +18,10 @@ const userSchema = Schema({
 		type: String,
 		required: true
 	},
+	thumbnail: {
+		type: String,
+		required: false
+	},
 	creationDate: {
 		type: Date,
 		default: Date.now()

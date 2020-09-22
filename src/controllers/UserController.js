@@ -2,14 +2,14 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
+//	Loading utils
+const regex = require("../utils/regex");
+
 //	Loading Users and Contacts schemas and collections from database
 require("../models/User");
 require("../models/Contact");
 const users = mongoose.model("Usuarios");
 const contacts = mongoose.model("Contatos");
-
-//	Defining regular expression to validations
-const emailRegEx = new RegExp(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/);
 
 //	Exporting User features
 module.exports = {
@@ -31,7 +31,7 @@ module.exports = {
 			return res.status(500).send(error);
 		});
 	},
-	//	Create a new user
+	//	Create a new user given body
 	async create(req, res) {
 		const { name, email, password, passwordC } = req.body;
 
@@ -39,7 +39,7 @@ module.exports = {
 			return res.status(400).send("Invalid name!");
 		}
 
-		if(!email || !email.length || !emailRegEx.test(email)) {
+		if(!email || !email.length || !regex.email.test(email)) {
 			return res.status(400).send("Invalid email!");
 		}
 
@@ -84,7 +84,7 @@ module.exports = {
 			return res.status(500).send(error);
 		});
 	},
-	//	Update current user on database
+	//	Update current user given body and user id
 	async update(req, res) {
 		const userId = req.headers.authorization;
 		const { name, email, passwordO, passwordN } = req.body;
@@ -97,7 +97,7 @@ module.exports = {
 			return res.status(400).send("Invalid name!");
 		}
 
-		if(!email || !email.length || !emailRegEx.test(email)) {
+		if(!email || !email.length || !regex.email.test(email)) {
 			return res.status(400).send("Invalid email!");
 		}
 
@@ -140,7 +140,7 @@ module.exports = {
 			return res.status(500).send(error);
 		});
 	},
-	//	Remove current user from database giver correct user password
+	//	Remove current user given user id and a correct password
 	async delete(req, res) {
 		const { password } = req.headers;
 		const userId = req.headers.authorization;
@@ -183,11 +183,7 @@ module.exports = {
 			name: "asc",
 			creationDate: "desc"
 		}).then((response) => {
-			if(response && response.length) {
-				return res.status(200).json(response);
-			} else {
-				return res.status(404).send("Users not found!");
-			}
+			return res.status(200).json(response);
 		}).catch((error) => {
 			return res.status(500).send(error);
 		});

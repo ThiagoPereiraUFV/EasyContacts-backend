@@ -2,12 +2,12 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
+//	Loading utils
+const regex = require("../utils/regex");
+
 //	Loading Users schema and collection from database
 require("../models/User");
 const users = mongoose.model("Usuarios");
-
-//	Defining regular expression to validations
-const emailRegEx = new RegExp(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/);
 
 //	Exporting Session features
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
 			if(user) {
 				return res.status(200).json(user);
 			} else {
-				return res.status(404).send("User not found using this email, try again!");
+				return res.status(404).send("User not found, try again!");
 			}
 		}).catch((error) => {
 			return res.status(500).send(error);
@@ -33,7 +33,7 @@ module.exports = {
 	async create(req, res) {
 		const { email, password } = req.body;
 
-		if(!email || !email.length || !emailRegEx.test(email)) {
+		if(!email || !email.length || !regex.email.test(email)) {
 			return res.status(400).send("Invalid email!");
 		}
 

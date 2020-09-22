@@ -7,7 +7,7 @@ const contacts = mongoose.model("Contatos");
 
 //	Exporting Contacts features
 module.exports = {
-	//	Return a specific contact given id from current user
+	//	Return a specific contact given its id and user id
 	async index(req, res) {
 		const userId = req.headers.authorization;
 		const contactId = req.params.id;
@@ -30,7 +30,7 @@ module.exports = {
 			return res.status(500).send(error);
 		});
 	},
-	//	Create a new contact to current user
+	//	Create a new contact given body and user id
 	async create(req, res) {
 		const userId = req.headers.authorization;
 		const { name, surname, phone, email, address, annotations } = req.body;
@@ -61,7 +61,7 @@ module.exports = {
 			return res.status(500).send(error);
 		});
 	},
-	//	Update a specific contact from current user
+	//	Update a specific contact given its id, body and user id
 	async update(req, res) {
 		const userId = req.headers.authorization;
 		const contactId = req.params.id;
@@ -97,7 +97,7 @@ module.exports = {
 			return res.status(500).send(error);
 		});
 	},
-	//	Delete a specific contact from current user
+	//	Delete a specific contact fiven its id and user id
 	async delete(req, res) {
 		const userId = req.headers.authorization;
 		const contactId = req.params.id;
@@ -120,7 +120,7 @@ module.exports = {
 			return res.status(500).send(error);
 		});
 	},
-	//	Return all contacts from current user
+	//	Return all contacts from current user given user id
 	async all(req, res) {
 		const userId = req.headers.authorization;
 
@@ -132,11 +132,7 @@ module.exports = {
 			name: "asc",
 			surname: "asc"
 		}).then((response) => {
-			if(response && response.length) {
-				return res.status(200).json(response);
-			} else {
-				return res.status(404).send("Contacts not found!");
-			}
+			return res.status(200).json(response);
 		}).catch((error) => {
 			return res.status(500).send(error);
 		});
@@ -144,13 +140,13 @@ module.exports = {
 	//	Return a list of contacts containing a specific word
 	async search(req, res) {
 		const userId = req.headers.authorization;
-		const search_query = req.query.search_query;
+		const query = req.query.q;
 
 		if(!userId || !userId.length || !mongoose.Types.ObjectId.isValid(userId)) {
 			return res.status(400).send("Invalid id!");
 		}
 
-		if(!search_query || !search_query.length) {
+		if(!query || !query.length) {
 			return res.status(400).send("Invalid search!");
 		}
 
@@ -159,27 +155,27 @@ module.exports = {
 			$or: [
 				{
 					name: {
-						$regex: ".*" + search_query + ".*",
+						$regex: ".*" + query + ".*",
 						$options: "i"
 					}
 				}, {
 					surname: {
-						$regex: ".*" + search_query + ".*",
+						$regex: ".*" + query + ".*",
 						$options: "i"
 					}
 				}, {
 					email: {
-						$regex: ".*" + search_query + ".*",
+						$regex: ".*" + query + ".*",
 						$options: "i"
 					}
 				}, {
 					phone: {
-						$regex: ".*" + search_query + ".*",
+						$regex: ".*" + query + ".*",
 						$options: "i"
 					}
 				}, {
 					annotations: {
-						$regex: ".*" + search_query + ".*",
+						$regex: ".*" + query + ".*",
 						$options: "i"
 					}
 				}
@@ -188,11 +184,7 @@ module.exports = {
 			name: "asc",
 			surname: "asc"
 		}).then((response) => {
-			if(response && response.length) {
-				return res.status(200).json(response);
-			} else {
-				return res.status(404).send("Contacts not found!");
-			}
+			return res.status(200).json(response);
 		}).catch((error) => {
 			return res.status(500).send(error);
 		});

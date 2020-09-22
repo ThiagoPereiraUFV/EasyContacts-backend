@@ -34,7 +34,7 @@ const contactSchema = Schema({
 		type: String,
 		required: false
 	},
-	imageName: {
+	thumbnail: {
 		type: String,
 		required: false
 	},

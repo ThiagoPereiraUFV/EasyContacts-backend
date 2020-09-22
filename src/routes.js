@@ -20,17 +20,17 @@ routes.post("/session", SessionController.create);
 
 //  User
 routes.get("/user/:id", UserController.index);
+routes.get("/user", UserController.all);
 routes.post("/user", UserController.create);
 routes.put("/user", UserController.update);
 routes.delete("/user", UserController.delete);
-routes.get("/user", UserController.all);
 
 //  Contacts
 routes.get("/contacts/:id", ContactsController.index);
+routes.get("/contacts", ContactsController.all);
+routes.get("/contactsSearch", ContactsController.search);
 routes.post("/contacts", ContactsController.create);
 routes.put("/contacts/:id", ContactsController.update);
 routes.delete("/contacts/:id", ContactsController.delete);
-routes.get("/contacts", ContactsController.all);
-routes.get("/contactsSearch", ContactsController.search);
 
 module.exports = routes;
