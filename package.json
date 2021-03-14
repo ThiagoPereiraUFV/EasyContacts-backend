@@ -1,5 +1,5 @@
 {
-  "name": "easyContacts-backend",
+  "name": "easycontacts-backend",
   "version": "1.0.0",
   "description": "System to manage contacts developed using Express.js",
   "main": "src/index.ts",
