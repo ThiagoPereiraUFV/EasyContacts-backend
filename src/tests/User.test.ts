@@ -11,9 +11,6 @@ var userToken = ["", ""];
 
 describe("User", () => {
 	afterAll(async () => {
-		await mongoose.connection.db.dropCollection("users").catch((error) => {
-			return console.error("Unable to drop collection from database:", error);
-		});
 		await mongoose.disconnect().catch((error) => {
 			return console.error("Unable to disconnect from database:", error);
 		});
