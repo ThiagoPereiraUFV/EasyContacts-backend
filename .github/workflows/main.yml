@@ -20,6 +20,6 @@ jobs:
         run: yarn
 
       - name: Run tests
-        run: yarn test --ci
         env:
           SECRET: ${{ secrets.SECRET }}
+        run: yarn test --ci
