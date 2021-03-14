@@ -40,27 +40,23 @@ class UserController {
 			if(response) {
 				return res.status(400).send("This email isn't available, try another!");
 			} else {
-				try {
-					UsersRepository.create({
-						name: name.trim(),
-						email: email.trim().toLowerCase(),
-						password
-					}).then((user) => {
-						if(user) {
-							const token = jwt.sign({ userId: user._id }, <string>process.env.SECRET, {
-								expiresIn: 86400
-							});
+				UsersRepository.create({
+					name: name.trim(),
+					email: email.trim().toLowerCase(),
+					password
+				}).then((user) => {
+					if(user) {
+						const token = jwt.sign({ userId: user._id }, <string>process.env.SECRET, {
+							expiresIn: 86400
+						});
 
-							return res.status(201).json({ user, token });
-						} else {
-							return res.status(400).send("We couldn't process your request, try again later!");
-						}
-					}).catch((error) => {
-						return res.status(500).send(error);
-					});
-				} catch (error) {
-					return res.status(500).send(error.message);
-				}
+						return res.status(201).json({ user, token });
+					} else {
+						return res.status(400).send("We couldn't process your request, try again later!");
+					}
+				}).catch((error) => {
+					return res.status(500).send(error);
+				});
 			}
 		}).catch((error) => {
 			return res.status(500).send(error);
@@ -78,8 +74,6 @@ class UserController {
 			} else {
 				UsersRepository.findById(<string>userId).then((user) => {
 					if(user) {
-						var password = "";
-
 						user.name = name.trim();
 						user.email = email.trim().toLowerCase();
 
