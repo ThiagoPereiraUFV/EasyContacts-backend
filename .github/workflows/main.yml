@@ -3,9 +3,10 @@ name: Tests
 on: [push]
 
 jobs:
-  test:
+  node10:
     runs-on: ubuntu-latest
 
+    name: Node 10 sample
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -13,8 +14,45 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
-          check-latest: true
+          node-version: 10
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Run tests
+        run: yarn test --ci
+  node12:
+    needs: node10
+    runs-on: ubuntu-latest
+
+    name: Node 12 sample
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Run tests
+        run: yarn test --ci
+  node14:
+    needs: node12
+    runs-on: ubuntu-latest
+
+    name: Node 14 sample
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
 
       - name: Install Dependencies
         run: yarn
