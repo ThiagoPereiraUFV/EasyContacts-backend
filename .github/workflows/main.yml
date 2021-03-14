@@ -8,6 +8,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2-beta
+      with:
+        node-version: '14'
+        check-latest: true
     - name: Run Jest
       uses: stefanoeb/jest-action@1.0.3
