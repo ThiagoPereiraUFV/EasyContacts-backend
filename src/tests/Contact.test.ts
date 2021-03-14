@@ -111,8 +111,4 @@ describe("Contact", () => {
 			"x-access-token": userToken
 		}).expect(404);
 	});
-
-	test("Should be able to return 0 contacts", async () => {
-		await request(app).get("/allContacts").expect(404);
-	});
 });
