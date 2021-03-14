@@ -20,11 +20,7 @@ describe("Session", () => {
 			email: "user.session@example.com",
 			password: "password",
 			passwordC: "password"
-		}).then((response) => {
-			console.log(response);
-			expect(response.status).toBe(201);
-			userToken = response.body.token;
-		});
+		}).expect(201).then((response) => userToken = response.body.token);
 	});
 /*
 	test("Should be able to create a session", async () => {
@@ -51,8 +47,6 @@ describe("Session", () => {
 		return await request(app).delete("/user").set({
 			"x-access-token": userToken,
 			password: "password"
-		}).then((response) => {
-			expect(response.status).toBe(200);
-		});
+		}).expect(200);
 	});
 });
