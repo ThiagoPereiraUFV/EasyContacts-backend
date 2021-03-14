@@ -13,11 +13,11 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2-beta
         with:
-          node-version: '12'
+          node-version: '14'
           check-latest: true
 
       - name: Install Dependencies
         run: yarn
 
       - name: Test
-        run: yarn test --verbose
+        run: yarn test
