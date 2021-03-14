@@ -19,8 +19,8 @@ describe("Contact", () => {
 
 	test("Should be able to create a user", async () => {
 		await request(app).post("/user").send({
-			name: "User Example",
-			email: "user@example.com",
+			name: "User Contact Example",
+			email: "user.contact@example.com",
 			password: "password",
 			passwordC: "password"
 		}).then((response) => {
@@ -72,8 +72,8 @@ describe("Contact", () => {
 
 	test("Should be able to update name and email of the first created contact", async () => {
 		await request(app).put("/contact/" + contactId[0]).send({
-			name: "User",
-			email: "user@example.com"
+			name: "Contact Updated Example",
+			email: "contact.updated@example.com"
 		}).set({
 			"x-access-token": userToken
 		}).then((response) => {

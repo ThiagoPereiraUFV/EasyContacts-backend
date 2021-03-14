@@ -69,8 +69,8 @@ describe("User", () => {
 		await request(app).put("/user").set({
 			"x-access-token": userToken[0]
 		}).send({
-			name: "User",
-			email: "user@example.com",
+			name: "User Updated Example",
+			email: "user.updated@example.com",
 			passwordO: "password",
 			passwordN: "password1"
 		}).then((response) => {

@@ -15,8 +15,8 @@ describe("Session", () => {
 
 	test("Should be able to create a user", async () => {
 		await request(app).post("/user").send({
-			name: "User",
-			email: "user@example.com",
+			name: "User Session Example",
+			email: "user.session@example.com",
 			password: "password",
 			passwordC: "password"
 		}).then((response) => {
@@ -27,7 +27,7 @@ describe("Session", () => {
 
 	test("Should be able to create a session", async () => {
 		await request(app).post("/session").send({
-			email: "user@example.com",
+			email: "user.session@example.com",
 			password: "password"
 		}).set({
 			"x-access-token": userToken
