@@ -11,7 +11,6 @@ var userToken = "";
 var contactId = ["", ""];
 
 describe("Contact", () => {
-	beforeAll(async () => jest.setTimeout(30000));
 	afterAll(async () => {
 		await mongoose.disconnect().catch((error) => {
 			return console.error("Unable to disconnect from database:", error);
@@ -24,10 +23,7 @@ describe("Contact", () => {
 			email: "user.contact@example.com",
 			password: "password",
 			passwordC: "password"
-		}).then((response) => {
-			expect(response.status).toBe(201);
-			userToken = response.body.token;
-		});
+		}).expect(201).then((response) => userToken = response.body.token);
 	});
 
 	test("Should be able to create a contact", async () => {
@@ -37,10 +33,7 @@ describe("Contact", () => {
 			phone: "4002-8922"
 		}).set({
 			"x-access-token": userToken
-		}).then((response) => {
-			expect(response.status).toBe(201);
-			contactId[0] = response.body._id;
-		});
+		}).expect(201).then((response) => contactId[0] = response.body._id);
 	});
 
 	test("Should be able to create another contact", async () => {
@@ -50,24 +43,17 @@ describe("Contact", () => {
 			phone: "4002-8922"
 		}).set({
 			"x-access-token": userToken
-		}).then((response) => {
-			expect(response.status).toBe(201);
-			contactId[1] = response.body._id;
-		});
+		}).expect(201).then((response) => contactId[1] = response.body._id);
 	});
 
 	test("Should be able to get all user contacts", async () => {
 		await request(app).get("/contact").set({
 			"x-access-token": userToken
-		}).then((response) => {
-			expect(response.status).toBe(200);
-		});
+		}).expect(200);
 	});
 
 	test("Should be able to get all database contacts", async () => {
-		await request(app).get("/allContacts").then((response) => {
-			expect(response.status).toBe(200);
-		});
+		await request(app).get("/allContacts").expect(200);
 	});
 
 	test("Should be able to update name and email of the first created contact", async () => {
@@ -76,33 +62,25 @@ describe("Contact", () => {
 			email: "contact.updated@example.com"
 		}).set({
 			"x-access-token": userToken
-		}).then((response) => {
-			expect(response.status).toBe(200);
-		});
+		}).expect(200);
 	});
 
 	test("Should be able to update image of the first created contact", async () => {
 		await request(app).put("/contactImage/" + contactId[0]).attach("image", fileTest[0]).set({
 			"x-access-token": userToken
-		}).then((response) => {
-			expect(response.status).toBe(200);
-		});
+		}).expect(200);
 	});
 
 	test("Should not be able to update image of the first created contact", async () => {
 		await request(app).put("/contactImage/" + contactId[0]).attach("image", fileTest[1]).set({
 			"x-access-token": userToken
-		}).then((response) => {
-			expect(response.status).toBe(400);
-		});
+		}).expect(400);
 	});
 
 	test("Should be able to delete first created contact", async () => {
 		await request(app).delete("/contact/" + contactId[0]).set({
 			"x-access-token": userToken
-		}).then((response) => {
-			expect(response.status).toBe(200);
-		});
+		}).expect(200);
 	});
 
 	test("Should not be able to update name and email of the first created contact", async () => {
@@ -111,39 +89,29 @@ describe("Contact", () => {
 			email: "user@example.com"
 		}).set({
 			"x-access-token": userToken
-		}).then((response) => {
-			expect(response.status).toBe(404);
-		});
+		}).expect(404);
 	});
 
 	test("Should not be able to delete first created contact", async () => {
 		await request(app).delete("/contact/" + contactId[0]).set({
 			"x-access-token": userToken
-		}).then((response) => {
-			expect(response.status).toBe(404);
-		});
+		}).expect(404);
 	});
 
 	test("Should be able to delete user", async () => {
 		await request(app).delete("/user").set({
 			"x-access-token": userToken,
 			password: "password"
-		}).then((response) => {
-			expect(response.status).toBe(200);
-		});
+		}).expect(200);
 	});
 
 	test("Should not be able to get second created contact", async () => {
 		await request(app).get("/contact/" + contactId[1]).set({
 			"x-access-token": userToken
-		}).then((response) => {
-			expect(response.status).toBe(404);
-		});
+		}).expect(404);
 	});
 
 	test("Should be able to return 0 contacts", async () => {
-		await request(app).get("/allContacts").then((response) => {
-			expect(response.status).toBe(404);
-		});
+		await request(app).get("/allContacts").expect(404);
 	});
 });

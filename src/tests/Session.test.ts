@@ -7,7 +7,6 @@ import app from "../app";
 var userToken = "";
 
 describe("Session", () => {
-	beforeAll(async () => jest.setTimeout(30000));
 	afterAll(async () => {
 		await mongoose.disconnect().catch((error) => {
 			return console.error("Unable to disconnect from database:", error);
@@ -20,27 +19,22 @@ describe("Session", () => {
 			email: "user.session@example.com",
 			password: "password",
 			passwordC: "password"
-		}).expect(201);
+		}).expect(201).then((response) => userToken = response.body.token);
 	});
-/*
+
 	test("Should be able to create a session", async () => {
 		await request(app).post("/session").send({
 			email: "user.session@example.com",
 			password: "password"
 		}).set({
 			"x-access-token": userToken
-		}).then((response) => {
-			expect(response.status).toBe(201);
-			userToken = response.body.token;
-		});
+		}).expect(201).then((response) => userToken = response.body.token);
 	});
 
 	test("Should be able to get a session", async () => {
 		await request(app).get("/session").set({
 			"x-access-token": userToken
-		}).then((response) => {
-			expect(response.status).toBe(200);
-		});
+		}).expect(200);
 	});
 
 	test("Should be able to delete user", async () => {
@@ -48,5 +42,5 @@ describe("Session", () => {
 			"x-access-token": userToken,
 			password: "password"
 		}).expect(200);
-	});*/
+	});
 });
