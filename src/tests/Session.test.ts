@@ -13,7 +13,10 @@ describe("Session", () => {
 			return console.error("Unable to disconnect from database:", error);
 		});
 	});
-
+	test("All Users", async () => {
+		return await request(app).get("/allUsers").expect(404);
+	});
+/*
 	test("Should be able to create a user", async () => {
 		return await request(app).post("/user").send({
 			name: "User Session Example",
@@ -22,7 +25,7 @@ describe("Session", () => {
 			passwordC: "password"
 		}).expect(201).then((response) => userToken = response.body.token);
 	});
-/*
+
 	test("Should be able to create a session", async () => {
 		await request(app).post("/session").send({
 			email: "user.session@example.com",
@@ -41,12 +44,12 @@ describe("Session", () => {
 		}).then((response) => {
 			expect(response.status).toBe(200);
 		});
-	});*/
+	});
 
 	test("Should be able to delete user", async () => {
 		return await request(app).delete("/user").set({
 			"x-access-token": userToken,
 			password: "password"
 		}).expect(200);
-	});
+	});*/
 });
