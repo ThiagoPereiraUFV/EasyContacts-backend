@@ -10,13 +10,15 @@ class Database {
 		mongoose.Promise = global.Promise;
 		mongoose.set("useFindAndModify", false);
 
-		const dbUser = "mongodb+srv://easycontactsadmin";
-		const password = process.env.DBPASSWORD;
+		const serverProtocol = "mongodb+srv://";
+		const dbUser = (["test", "dev"].includes(<string>process.env.NODE_ENV)) ? "tester" : "admin";
+		const password = (["test", "dev"].includes(<string>process.env.NODE_ENV)) ?
+			"testerpassword" : process.env.DBPASSWORD;
 		const cluster = "@easycontacts.yvbgh.mongodb.net";
 		const dbOptions = "?retryWrites=true&w=majority";
 		const dbName = (["test", "dev"].includes(<string>process.env.NODE_ENV)) ? "test" : "production";
 
-		this.uri = dbUser + ":" + password + cluster + "/" + dbName + dbOptions;
+		this.uri = serverProtocol + dbUser + ":" + password + cluster + "/" + dbName + dbOptions;
 	}
 
 	//	Connect to database
