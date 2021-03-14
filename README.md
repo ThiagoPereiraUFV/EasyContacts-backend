@@ -48,16 +48,23 @@ System to manage contacts developed using NodeJS and Express.js.
 
 ## :wrench: Installation
 
-__You must install npm dependencies using the following command on your Terminal:__
+__You must install app dependencies using the following command on your Terminal:__
 
 ```bash
-# Install npm dependencies
+# yarn
+$ yarn install
+
+# npm
 $ npm install
 ```
 
 __Execute the following command to start app:__
 
 ```bash
+# yarn
+$ yarn start
+
+# npm
 $ npm start
 ```
 
