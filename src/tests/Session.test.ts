@@ -21,6 +21,7 @@ describe("Session", () => {
 			password: "password",
 			passwordC: "password"
 		}).then((response) => {
+			console.log(response);
 			expect(response.status).toBe(201);
 			userToken = response.body.token;
 		});
