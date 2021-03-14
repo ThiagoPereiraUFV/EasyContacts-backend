@@ -3,10 +3,10 @@ name: Tests
 on: [push]
 
 jobs:
-  node10:
+  node10ubuntu:
     runs-on: ubuntu-latest
 
-    name: Node 10 sample
+    name: Node 10
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -21,11 +21,11 @@ jobs:
 
       - name: Run tests
         run: yarn test --ci
-  node12:
-    needs: node10
-    runs-on: ubuntu-latest
+  node10macos:
+    needs: node10ubuntu
+    runs-on: macos-latest
 
-    name: Node 12 sample
+    name: Node 10 Mac OS
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -33,18 +33,18 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: 10
 
       - name: Install Dependencies
         run: yarn
 
       - name: Run tests
         run: yarn test --ci
-  node14:
-    needs: node12
+  node14ubuntu:
+    needs: node10macos
     runs-on: ubuntu-latest
 
-    name: Node 14 sample
+    name: Node 14 Ubuntu
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -53,6 +53,27 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14
+          check-latest: true
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Run tests
+        run: yarn test --ci
+  node14macos:
+    needs: node14ubuntu
+    runs-on: macos-latest
+
+    name: Node 14 Mac OS
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          check-latest: true
 
       - name: Install Dependencies
         run: yarn
