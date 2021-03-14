@@ -6,7 +6,7 @@ jobs:
   node10ubuntu:
     runs-on: ubuntu-latest
 
-    name: Node 10
+    name: Node 10 Ubuntu Latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -25,7 +25,7 @@ jobs:
     needs: node10ubuntu
     runs-on: macos-latest
 
-    name: Node 10 Mac OS
+    name: Node 10 Mac OS Latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -44,7 +44,7 @@ jobs:
     needs: node10macos
     runs-on: ubuntu-latest
 
-    name: Node 14 Ubuntu
+    name: Node 14 Ubuntu Latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -64,7 +64,7 @@ jobs:
     needs: node14ubuntu
     runs-on: macos-latest
 
-    name: Node 14 Mac OS
+    name: Node 14 Mac OS Latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
