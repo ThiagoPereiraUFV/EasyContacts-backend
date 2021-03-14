@@ -11,6 +11,7 @@ var userToken = "";
 var contactId = ["", ""];
 
 describe("Contact", () => {
+	beforeAll(async () => jest.setTimeout(30000));
 	afterAll(async () => {
 		await mongoose.disconnect().catch((error) => {
 			return console.error("Unable to disconnect from database:", error);
@@ -37,8 +38,8 @@ describe("Contact", () => {
 		}).set({
 			"x-access-token": userToken
 		}).then((response) => {
-			contactId[0] = response.body._id;
 			expect(response.status).toBe(201);
+			contactId[0] = response.body._id;
 		});
 	});
 
@@ -50,8 +51,8 @@ describe("Contact", () => {
 		}).set({
 			"x-access-token": userToken
 		}).then((response) => {
-			contactId[1] = response.body._id;
 			expect(response.status).toBe(201);
+			contactId[1] = response.body._id;
 		});
 	});
 
@@ -60,7 +61,6 @@ describe("Contact", () => {
 			"x-access-token": userToken
 		}).then((response) => {
 			expect(response.status).toBe(200);
-			expect(response.body.length).toBe(2);
 		});
 	});
 
@@ -101,7 +101,7 @@ describe("Contact", () => {
 		await request(app).delete("/contact/" + contactId[0]).set({
 			"x-access-token": userToken
 		}).then((response) => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(200);
 		});
 	});
 
@@ -120,7 +120,7 @@ describe("Contact", () => {
 		await request(app).delete("/contact/" + contactId[0]).set({
 			"x-access-token": userToken
 		}).then((response) => {
-			expect(response.status).toBe(404)
+			expect(response.status).toBe(404);
 		});
 	});
 
@@ -129,7 +129,7 @@ describe("Contact", () => {
 			"x-access-token": userToken,
 			password: "password"
 		}).then((response) => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(200);
 		});
 	});
 
@@ -137,13 +137,13 @@ describe("Contact", () => {
 		await request(app).get("/contact/" + contactId[1]).set({
 			"x-access-token": userToken
 		}).then((response) => {
-			expect(response.status).toBe(404)
+			expect(response.status).toBe(404);
 		});
 	});
 
 	test("Should be able to return 0 contacts", async () => {
 		await request(app).get("/allContacts").then((response) => {
-			expect(response.status).toBe(404)
+			expect(response.status).toBe(404);
 		});
 	});
 });

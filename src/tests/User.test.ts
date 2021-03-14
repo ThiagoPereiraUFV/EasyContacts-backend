@@ -10,6 +10,7 @@ const fileTest = ["./src/tests/files/test1.png", "./src/tests/files/test2.json"]
 var userToken = ["", ""];
 
 describe("User", () => {
+	beforeAll(async () => jest.setTimeout(30000));
 	afterAll(async () => {
 		await mongoose.disconnect().catch((error) => {
 			return console.error("Unable to disconnect from database:", error);
@@ -110,7 +111,7 @@ describe("User", () => {
 			"x-access-token": userToken[0],
 			password: "password"
 		}).then((response) => {
-			expect(response.status).toBe(400)
+			expect(response.status).toBe(400);
 		});
 	});
 
@@ -119,7 +120,7 @@ describe("User", () => {
 			"x-access-token": userToken[0],
 			password: "password1"
 		}).then((response) => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(200);
 		});
 	});
 
@@ -128,13 +129,13 @@ describe("User", () => {
 			"x-access-token": userToken[1],
 			password: "password"
 		}).then((response) => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(200);
 		});
 	});
 
 	test("Should be able to return 0 users", async () => {
 		await request(app).get("/allUsers").then((response) => {
-			expect(response.status).toBe(404)
+			expect(response.status).toBe(404);
 		});
 	});
 });

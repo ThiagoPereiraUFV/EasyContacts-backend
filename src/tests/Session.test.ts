@@ -7,6 +7,7 @@ import app from "../app";
 var userToken = "";
 
 describe("Session", () => {
+	beforeAll(async () => jest.setTimeout(30000));
 	afterAll(async () => {
 		await mongoose.disconnect().catch((error) => {
 			return console.error("Unable to disconnect from database:", error);
@@ -50,7 +51,7 @@ describe("Session", () => {
 			"x-access-token": userToken,
 			password: "password"
 		}).then((response) => {
-			expect(response.status).toBe(200)
+			expect(response.status).toBe(200);
 		});
 	});
 });
