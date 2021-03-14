@@ -3,21 +3,21 @@ name: Tests
 on: [push]
 
 jobs:
-	build:
-		runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-		steps:
-			- name: Checkout Repository
-				uses: actions/checkout@v2
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-			- name: Setup Node
-				uses: actions/setup-node@v2-beta
-				with:
-					node-version: '14'
-					check-latest: true
+      - name: Setup Node
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '14'
+          check-latest: true
 
-			- name: Install Dependencies
-				run: yarn
+      - name: Install Dependencies
+        run: yarn
 
-			- name: Test
-				run: yarn test --ci
+      - name: Test
+        run: yarn test --ci
