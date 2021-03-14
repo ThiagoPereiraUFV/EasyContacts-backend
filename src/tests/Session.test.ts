@@ -15,7 +15,7 @@ describe("Session", () => {
 	});
 
 	test("Should be able to create a user", async () => {
-		await request(app).post("/user").send({
+		return await request(app).post("/user").send({
 			name: "User Session Example",
 			email: "user.session@example.com",
 			password: "password",
@@ -44,14 +44,14 @@ describe("Session", () => {
 		}).then((response) => {
 			expect(response.status).toBe(200);
 		});
-	});
+	});*/
 
 	test("Should be able to delete user", async () => {
-		await request(app).delete("/user").set({
+		return await request(app).delete("/user").set({
 			"x-access-token": userToken,
 			password: "password"
 		}).then((response) => {
 			expect(response.status).toBe(200);
 		});
-	});*/
+	});
 });
