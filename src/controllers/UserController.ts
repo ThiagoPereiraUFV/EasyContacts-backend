@@ -46,6 +46,7 @@ class UserController {
 					password
 				}).then((user) => {
 					if(user) {
+						console.log("Passed!");
 						const token = jwt.sign({ userId: user._id }, <string>process.env.SECRET, {
 							expiresIn: 86400
 						});
