@@ -9,6 +9,7 @@ const fileTest = ["./src/tests/files/test1.png", "./src/tests/files/test2.json"]
 //	Test variables
 var userToken = "";
 var contactId = ["", ""];
+const username = Math.random().toString(36).substr(2, 9);
 
 describe("Contact", () => {
 	afterAll(async () => {
@@ -20,7 +21,7 @@ describe("Contact", () => {
 	test("Should be able to create a user", async () => {
 		await request(app).post("/user").send({
 			name: "User Contact Example",
-			email: "user.contact@example.com",
+			email: username + ".contact@example.com",
 			password: "password",
 			passwordC: "password"
 		}).expect(201).then((response) => userToken = response.body.token);
@@ -85,8 +86,8 @@ describe("Contact", () => {
 
 	test("Should not be able to update name and email of the first created contact", async () => {
 		await request(app).put("/contact/" + contactId[0]).send({
-			name: "User",
-			email: "user@example.com"
+			name: "Contact Updated Example",
+			email: "contact.updated@example.com"
 		}).set({
 			"x-access-token": userToken
 		}).expect(404);
