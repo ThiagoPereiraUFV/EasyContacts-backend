@@ -106,8 +106,4 @@ describe("User", () => {
 			password: "password"
 		}).expect(200);
 	});
-
-	test("Should be able to return 0 users", async () => {
-		await request(app).get("/allUsers").expect(404);
-	});
 });
