@@ -68,7 +68,9 @@ describe("User", () => {
 	test("Should be able to update image of the first created user", async () => {
 		await request(app).put("/userImage").attach("image", fileTest[0]).set({
 			"x-access-token": userToken[0]
-		}).expect(200);
+		}).expect(200).then((response) => {
+			return request(app).get("/files/" + response.body.image).expect(200);
+		});
 	});
 
 	test("Should not be able to update image of the first created user", async () => {

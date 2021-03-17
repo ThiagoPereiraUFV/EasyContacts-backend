@@ -69,7 +69,9 @@ describe("Contact", () => {
 	test("Should be able to update image of the first created contact", async () => {
 		await request(app).put("/contactImage/" + contactId[0]).attach("image", fileTest[0]).set({
 			"x-access-token": userToken
-		}).expect(200);
+		}).expect(200).then((response) => {
+			return request(app).get("/files/" + response.body.image).expect(200);
+		});
 	});
 
 	test("Should not be able to update image of the first created contact", async () => {
