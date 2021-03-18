@@ -20,7 +20,7 @@ class ContactsController {
 		}
 
 		await ContactsRepository.allFromUser(userId).then((response) => {
-			if(response && response.length) {
+			if(response) {
 				return res.status(200).json(response);
 			} else {
 				return res.status(404).send("Contacts not found!");

@@ -185,7 +185,7 @@ class UserController {
 	//	Return all users
 	async all(req: Request, res: Response) {
 		await UsersRepository.all().then((response) => {
-			if(response && response.length) {
+			if(response) {
 				return res.status(200).json(response);
 			} else {
 				return res.status(404).send("Users not found!");
