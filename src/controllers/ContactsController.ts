@@ -138,7 +138,7 @@ class ContactsController {
 	//	Return all contacts
 	async all(req: Request, res: Response) {
 		await ContactsRepository.all().then((response) => {
-			if(response && response.length) {
+			if(response) {
 				return res.status(200).json(response);
 			} else {
 				return res.status(404).send("Contacts not found!");
@@ -152,45 +152,16 @@ class ContactsController {
 	async search(req: Request, res: Response) {
 		const userId = req.headers.authorization;
 		const query = req.query.q;
-		/*
-		await ContactsRepository.find({
-			userId,
-			$or: [
-				{
-					name: {
-						$regex: ".*" + query + ".*",
-						$options: "i"
-					}
-				}, {
-					surname: {
-						$regex: ".*" + query + ".*",
-						$options: "i"
-					}
-				}, {
-					email: {
-						$regex: ".*" + query + ".*",
-						$options: "i"
-					}
-				}, {
-					phone: {
-						$regex: ".*" + query + ".*",
-						$options: "i"
-					}
-				}, {
-					annotations: {
-						$regex: ".*" + query + ".*",
-						$options: "i"
-					}
-				}
-			]
-		}).sort({
-			name: "asc",
-			surname: "asc"
-		}).then((response) => {
-			return res.status(200).json(response);
+
+		await ContactsRepository.find(<string>userId, <string>query).then((response) => {
+			if(response) {
+				return res.status(200).json(response);
+			} else {
+				return res.status(404).send("Contacts not found!");
+			}
 		}).catch((error) => {
 			return res.status(500).send(error);
-		});*/
+		});
 	}
 };
 

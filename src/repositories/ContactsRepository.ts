@@ -9,10 +9,6 @@ class ContactsRepository {
 		return await contacts.findOne({ _id, userId });
 	}
 
-	public async findByName(name: string) {
-		return await contacts.findOne({ name: name.trim() });
-	}
-
 	public async allFromUser(userId: string) {
 		return await contacts.find({ userId }).sort({
 			name: "asc",
@@ -22,6 +18,43 @@ class ContactsRepository {
 
 	public async all() {
 		return await contacts.find().populate("userId").sort({
+			name: "asc",
+			surname: "asc"
+		});
+	}
+
+	public async find(userId: string, query: string) {
+		return await contacts.find({
+			userId,
+			$or: [
+				{
+					name: {
+						$regex: ".*" + query + ".*",
+						$options: "i"
+					}
+				}, {
+					surname: {
+						$regex: ".*" + query + ".*",
+						$options: "i"
+					}
+				}, {
+					email: {
+						$regex: ".*" + query + ".*",
+						$options: "i"
+					}
+				}, {
+					phone: {
+						$regex: ".*" + query + ".*",
+						$options: "i"
+					}
+				}, {
+					annotations: {
+						$regex: ".*" + query + ".*",
+						$options: "i"
+					}
+				}
+			]
+		}).sort({
 			name: "asc",
 			surname: "asc"
 		});

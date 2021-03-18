@@ -38,7 +38,7 @@ routes.put("/contact/:id", auth.verify, valid.updateContact, ContactsController.
 routes.put("/contactImage/:id", contactUpload, auth.verify, valid.updateContactImage, ContactsController.updateImage);
 routes.delete("/contact/:id", auth.verify, valid.deleteContact, ContactsController.delete);
 routes.get("/allContacts", ContactsController.all);
-routes.get("/searchContacts", auth.verify, valid.searchContact, ContactsController.search);
+routes.get("/searchContact", auth.verify, valid.searchContact, ContactsController.search);
 
 //	Not found page
 routes.get("*", (req: Request, res: Response) => {

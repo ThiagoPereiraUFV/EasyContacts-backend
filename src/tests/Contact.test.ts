@@ -1,4 +1,5 @@
 //	Importing mongoose, supertest and app resources
+import { response } from "express";
 import mongoose from "mongoose";
 import request from "supertest";
 import app from "../app";
@@ -55,6 +56,18 @@ describe("Contact", () => {
 
 	test("Should be able to get all database contacts", async () => {
 		await request(app).get("/allContacts").expect(200);
+	});
+
+	test("Should be able to get two contacts named Contact Example", async () => {
+		await request(app).get("/searchContact?q=Contact Example").set({
+			"x-access-token": userToken
+		}).expect(200).then((response) => expect(response.body.length).toBe(2));
+	});
+
+	test("Should be able to get zero contacts named Maria", async () => {
+		await request(app).get("/searchContact?q=Maria").set({
+			"x-access-token": userToken
+		}).expect(200).then((response) => expect(response.body.length).toBe(0));
 	});
 
 	test("Should be able to update name and email of the first created contact", async () => {
