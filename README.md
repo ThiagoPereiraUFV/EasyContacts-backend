@@ -13,6 +13,8 @@
 
 <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/ThiagoPereiraUFV/EasyContacts-backend">
 
+<img alt="GitHub workflow status" src="https://img.shields.io/github/workflow/status/ThiagoPereiraUFV/EasyContacts-backend/Tests">
+
 <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen">
 </p>
 
