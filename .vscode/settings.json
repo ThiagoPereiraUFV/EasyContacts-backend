@@ -1,5 +1,5 @@
 {
-	"editor.insertSpaces": false,
-	"editor.tabSize": 2,
-	"editor.formatOnSave": false
+	"eslint.options": {
+		"configFile": "/home/thiago/Downloads/Projects/config/.eslintrc"
+	},
 }

@@ -23,7 +23,7 @@ export default {
 		}
 
 		if(errors.length) {
-			return res.status(400).json({ errors: errors });
+			return res.status(400).json({ errors });
 		} else {
 			return next();
 		}
@@ -53,7 +53,7 @@ export default {
 		}
 
 		if(errors.length) {
-			return res.status(400).json({ errors: errors });
+			return res.status(400).json({ errors });
 		} else {
 			return next();
 		}
@@ -76,7 +76,7 @@ export default {
 		}
 
 		if(errors.length) {
-			return res.status(400).json({ errors: errors });
+			return res.status(400).json({ errors });
 		} else {
 			return next();
 		}
@@ -84,16 +84,16 @@ export default {
 	async updateUserImage(req: Request, res: Response, next: NextFunction) {
 		const userId = req.headers.authorization;
 		const filename = (req.file) ? req.file.filename : null;
-    const errors = [];
+		const errors = [];
 
-    //	Checking if the upload is really an image
-    if(filename) {
-      const mimeType = (req.file.mimetype) ? req.file.mimetype.split("/")[0] : null;
+		//	Checking if the upload is really an image
+		if(filename) {
+			const mimeType = (req?.file?.mimetype) ? req?.file?.mimetype.split("/")[0] : null;
 
-      if(!mimeType || !mimeType.length || (mimeType != "image")) {
-        errors.push("Invalid image type!");
-      }
-    } else {
+			if(!mimeType || !mimeType.length || (mimeType != "image")) {
+				errors.push("Invalid image type!");
+			}
+		} else {
 			errors.push("Invalid image!");
 		}
 
@@ -106,7 +106,7 @@ export default {
 				deleteFile(userUploads(filename));
 			}
 
-			return res.status(400).send({ errors: errors });
+			return res.status(400).send({ errors });
 		} else {
 			return next();
 		}
@@ -125,7 +125,7 @@ export default {
 		}
 
 		if(errors.length) {
-			return res.status(400).json({ errors: errors });
+			return res.status(400).json({ errors });
 		} else {
 			return next();
 		}
@@ -146,7 +146,7 @@ export default {
 		}
 
 		if(errors.length) {
-			return res.status(400).json({ errors: errors });
+			return res.status(400).json({ errors });
 		} else {
 			return next();
 		}
@@ -165,12 +165,12 @@ export default {
 			errors.push("Invalid id!");
 		}
 
-		if(!name || !name.length ) {
+		if(!name || !name.length) {
 			errors.push("Invalid name!");
 		}
 
 		if(errors.length) {
-			return res.status(400).json({ errors: errors });
+			return res.status(400).json({ errors });
 		} else {
 			return next();
 		}
@@ -179,16 +179,16 @@ export default {
 		const userId = req.headers.authorization;
 		const contactId = req.params.id;
 		const filename = (req.file) ? req.file.filename : null;
-    const errors = [];
+		const errors = [];
 
-    //	Checking if the upload is really an image
-    if(filename) {
-      const mimeType = (req.file.mimetype) ? req.file.mimetype.split("/")[0] : null;
+		//	Checking if the upload is really an image
+		if(filename) {
+			const mimeType = (req?.file?.mimetype) ? req?.file?.mimetype.split("/")[0] : null;
 
-      if(!mimeType || !mimeType.length || (mimeType != "image")) {
-        errors.push("Invalid image type!");
-      }
-    } else {
+			if(!mimeType || !mimeType.length || (mimeType != "image")) {
+				errors.push("Invalid image type!");
+			}
+		} else {
 			errors.push("Invalid image!");
 		}
 
@@ -205,7 +205,7 @@ export default {
 				deleteFile(contactUploads(filename));
 			}
 
-			return res.status(400).send({ errors: errors });
+			return res.status(400).send({ errors });
 		} else {
 			return next();
 		}
@@ -224,7 +224,7 @@ export default {
 		}
 
 		if(errors.length) {
-			return res.status(400).json({ errors: errors });
+			return res.status(400).json({ errors });
 		} else {
 			return next();
 		}
@@ -243,7 +243,7 @@ export default {
 		}
 
 		if(errors.length) {
-			return res.status(400).json({ errors: errors });
+			return res.status(400).json({ errors });
 		} else {
 			return next();
 		}

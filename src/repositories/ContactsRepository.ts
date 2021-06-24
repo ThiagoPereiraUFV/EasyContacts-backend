@@ -29,27 +29,27 @@ class ContactsRepository {
 			$or: [
 				{
 					name: {
-						$regex: ".*" + query + ".*",
+						$regex: `.*${query}.*`,
 						$options: "i"
 					}
 				}, {
 					surname: {
-						$regex: ".*" + query + ".*",
+						$regex: `.*${query}.*`,
 						$options: "i"
 					}
 				}, {
 					email: {
-						$regex: ".*" + query + ".*",
+						$regex: `.*${query}.*`,
 						$options: "i"
 					}
 				}, {
 					phone: {
-						$regex: ".*" + query + ".*",
+						$regex: `.*${query}.*`,
 						$options: "i"
 					}
 				}, {
 					annotations: {
-						$regex: ".*" + query + ".*",
+						$regex: `.*${query}.*`,
 						$options: "i"
 					}
 				}

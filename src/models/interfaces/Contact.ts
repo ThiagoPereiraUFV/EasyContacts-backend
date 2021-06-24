@@ -13,4 +13,4 @@ export interface Contact extends Document {
 	image?: string,
 	createdAt: Date,
 	updatedAt: Date
-};
+}

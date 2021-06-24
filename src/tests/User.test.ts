@@ -7,7 +7,7 @@ import app from "../app";
 const fileTest = ["./src/tests/files/test1.png", "./src/tests/files/test2.json"];
 
 //	Test variables
-var userToken = ["", ""];
+const userToken = ["", ""];
 const username = [Math.random().toString(36).substr(2, 9), Math.random().toString(36).substr(2, 9)];
 
 describe("User", () => {
@@ -20,7 +20,7 @@ describe("User", () => {
 	test("Should be able to create a user", async () => {
 		await request(app).post("/user").send({
 			name: "User Example",
-			email: username[0] + "@example.com",
+			email: `${username[0]}@example.com`,
 			password: "password",
 			passwordC: "password"
 		}).expect(201).then((response) => userToken[0] = response.body.token);
@@ -35,7 +35,7 @@ describe("User", () => {
 	test("Should be able to create another user", async () => {
 		await request(app).post("/user").send({
 			name: "User Example 2",
-			email: username[1] + "@example.com",
+			email: `${username[1]}@example.com`,
 			password: "password",
 			passwordC: "password"
 		}).expect(201).then((response) => userToken[1] = response.body.token);
@@ -44,7 +44,7 @@ describe("User", () => {
 	test("Should not be able to create a new user using existent email", async () => {
 		await request(app).post("/user").send({
 			name: "User Example",
-			email: username[0] + "@example.com",
+			email: `${username[0]}@example.com`,
 			password: "password",
 			passwordC: "password"
 		}).expect(400);
@@ -59,7 +59,7 @@ describe("User", () => {
 			"x-access-token": userToken[0]
 		}).send({
 			name: "User Updated Example",
-			email: username[0] + ".updated@example.com",
+			email: `${username[0]}.updated@example.com`,
 			passwordO: "password",
 			passwordN: "password1"
 		}).expect(200);
@@ -69,7 +69,7 @@ describe("User", () => {
 		await request(app).put("/userImage").attach("image", fileTest[0]).set({
 			"x-access-token": userToken[0]
 		}).expect(200).then((response) => {
-			return request(app).get("/files/" + response.body.image).expect(200);
+			return request(app).get(`/files/${response.body.image}`).expect(200);
 		});
 	});
 
@@ -84,7 +84,7 @@ describe("User", () => {
 			"x-access-token": userToken[0]
 		}).send({
 			name: "User",
-			email: username[1] + "@example.com"
+			email: `${username[1]}@example.com`
 		}).expect(400);
 	});
 

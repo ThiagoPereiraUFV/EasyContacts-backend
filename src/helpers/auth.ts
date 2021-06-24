@@ -15,13 +15,14 @@ export default {
 
 				if(decoded && decoded.userId) {
 					req.headers.authorization = decoded.userId;
+
 					return next();
 				} else {
 					return res.status(401).send("Invalid token!");
 				}
-			} catch (error) {
+			} catch(error) {
 				return res.status(401).send("Invalid token!");
 			}
 		}
 	}
-}
+};

@@ -109,7 +109,7 @@ class UserController {
 	//	Update user image
 	async updateImage(req: Request, res: Response) {
 		const userId = req.headers.authorization;
-		const filename = req.file.filename;
+		const filename = req?.file?.filename ?? "";
 
 		await UsersRepository.findById(<string>userId).then((user) => {
 			if(user) {
@@ -150,7 +150,7 @@ class UserController {
 				if(user.comparePassword(<string>password)) {
 					ContactsRepository.allFromUser(user._id).then((response) => {
 						if(response && response.length) {
-							for (const contact of response) {
+							for(const contact of response) {
 								if(contact.image && contact.image.length) {
 									deleteFile(contactUploads(contact.image));
 								}
@@ -194,7 +194,7 @@ class UserController {
 			return res.status(500).send(error);
 		});
 	}
-};
+}
 
 //	Exporting User controller
 export default new UserController();

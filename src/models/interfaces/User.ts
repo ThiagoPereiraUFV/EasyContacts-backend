@@ -10,4 +10,4 @@ export interface User extends Document {
 	createdAt: Date,
 	updatedAt: Date,
 	comparePassword(password: string): boolean
-};
+}

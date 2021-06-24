@@ -83,7 +83,7 @@ class ContactsController {
 	async updateImage(req: Request, res: Response) {
 		const userId = req.headers.authorization;
 		const contactId = req.params.id;
-		const filename = req.file.filename;
+		const filename = req?.file?.filename ?? "";
 
 		await ContactsRepository.findById(<string>contactId, <string>userId).then((contact) => {
 			if(contact) {
@@ -109,7 +109,7 @@ class ContactsController {
 				return res.status(404).send("Contact not found!");
 			}
 		}).catch((error) => {
-				deleteFile(contactUploads(filename));
+			deleteFile(contactUploads(filename));
 
 			return res.status(500).send(error);
 		});
@@ -163,7 +163,7 @@ class ContactsController {
 			return res.status(500).send(error);
 		});
 	}
-};
+}
 
 //	Exporting Contacts controller
 export default new ContactsController();

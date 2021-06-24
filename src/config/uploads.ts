@@ -10,7 +10,7 @@ export const contactUpload = multer({
 
 			cb(null, `contact-${Date.now()}${ext}`);
 		}
-	}),
+	})
 }).single("image");
 
 export const userUpload = multer({

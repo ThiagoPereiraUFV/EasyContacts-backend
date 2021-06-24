@@ -1,5 +1,4 @@
 //	Importing mongoose, supertest and app resources
-import { response } from "express";
 import mongoose from "mongoose";
 import request from "supertest";
 import app from "../app";
@@ -8,8 +7,8 @@ import app from "../app";
 const fileTest = ["./src/tests/files/test1.png", "./src/tests/files/test2.json"];
 
 //	Test variables
-var userToken = "";
-var contactId = ["", ""];
+let userToken = "";
+const contactId = ["", ""];
 const username = Math.random().toString(36).substr(2, 9);
 
 describe("Contact", () => {
@@ -22,7 +21,7 @@ describe("Contact", () => {
 	test("Should be able to create a user", async () => {
 		await request(app).post("/user").send({
 			name: "User Contact Example",
-			email: username + ".contact@example.com",
+			email: `${username}.contact@example.com`,
 			password: "password",
 			passwordC: "password"
 		}).expect(201).then((response) => userToken = response.body.token);
@@ -71,7 +70,7 @@ describe("Contact", () => {
 	});
 
 	test("Should be able to update name and email of the first created contact", async () => {
-		await request(app).put("/contact/" + contactId[0]).send({
+		await request(app).put(`/contact/${contactId[0]}`).send({
 			name: "Contact Updated Example",
 			email: "contact.updated@example.com"
 		}).set({
@@ -80,27 +79,27 @@ describe("Contact", () => {
 	});
 
 	test("Should be able to update image of the first created contact", async () => {
-		await request(app).put("/contactImage/" + contactId[0]).attach("image", fileTest[0]).set({
+		await request(app).put(`/contactImage/${contactId[0]}`).attach("image", fileTest[0]).set({
 			"x-access-token": userToken
 		}).expect(200).then((response) => {
-			return request(app).get("/files/" + response.body.image).expect(200);
+			return request(app).get(`/files/${response.body.image}`).expect(200);
 		});
 	});
 
 	test("Should not be able to update image of the first created contact", async () => {
-		await request(app).put("/contactImage/" + contactId[0]).attach("image", fileTest[1]).set({
+		await request(app).put(`/contactImage/${contactId[0]}`).attach("image", fileTest[1]).set({
 			"x-access-token": userToken
 		}).expect(400);
 	});
 
 	test("Should be able to delete first created contact", async () => {
-		await request(app).delete("/contact/" + contactId[0]).set({
+		await request(app).delete(`/contact/${contactId[0]}`).set({
 			"x-access-token": userToken
 		}).expect(200);
 	});
 
 	test("Should not be able to update name and email of the first created contact", async () => {
-		await request(app).put("/contact/" + contactId[0]).send({
+		await request(app).put(`/contact/${contactId[0]}`).send({
 			name: "Contact Updated Example",
 			email: "contact.updated@example.com"
 		}).set({
@@ -109,7 +108,7 @@ describe("Contact", () => {
 	});
 
 	test("Should not be able to delete first created contact", async () => {
-		await request(app).delete("/contact/" + contactId[0]).set({
+		await request(app).delete(`/contact/${contactId[0]}`).set({
 			"x-access-token": userToken
 		}).expect(404);
 	});
@@ -122,7 +121,7 @@ describe("Contact", () => {
 	});
 
 	test("Should not be able to get second created contact", async () => {
-		await request(app).get("/contact/" + contactId[1]).set({
+		await request(app).get(`/contact/${contactId[1]}`).set({
 			"x-access-token": userToken
 		}).expect(404);
 	});
