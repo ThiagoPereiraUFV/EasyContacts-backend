@@ -19,6 +19,10 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
-      .expect('Hello World!');
+      .expect((req) => {
+        expect(req.body.message).toBe(
+          `App is running on port ${process.env.PORT || 4000}`,
+        );
+      });
   });
 });
