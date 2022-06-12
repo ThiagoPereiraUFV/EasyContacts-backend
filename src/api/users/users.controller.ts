@@ -7,17 +7,24 @@ import {
   Param,
   Delete,
   Put,
+  UsePipes,
 } from '@nestjs/common';
-import { ValidationIdPipe } from 'src/pipes/validations.pipe';
+import {
+  EmailExistsValidationPipe,
+  JoiValidationPipe,
+  ValidationIdPipe,
+} from 'src/pipes/validations.pipe';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { createUserSchema } from './schemas/create-user.schema';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @UsePipes(new JoiValidationPipe(createUserSchema), EmailExistsValidationPipe)
   async create(@Body() createUserDto: CreateUserDto) {
     return await this.usersService.create({ data: createUserDto });
   }
