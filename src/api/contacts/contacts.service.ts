@@ -6,7 +6,7 @@ import {
   UpdateContactInterface,
   RemoveContactInterface,
 } from './interfaces/crud.contacts';
-import { DBService } from 'src/db';
+import { DBService } from '../../db';
 
 @Injectable()
 export class ContactsService {

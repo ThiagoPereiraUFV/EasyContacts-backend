@@ -6,7 +6,7 @@ import {
   UpdateUserInterface,
   RemoveUserInterface,
 } from './interfaces/crud.users';
-import { DBService } from 'src/db';
+import { DBService } from '../../db';
 
 @Injectable()
 export class UsersService {
