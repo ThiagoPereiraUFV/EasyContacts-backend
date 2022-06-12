@@ -1,29 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import {
+  CreateUserInterface,
+  FindOneUserInterface,
+  FindUserInterface,
+  UpdateUserInterface,
+  RemoveUserInterface,
+} from './interfaces/crud.users';
 import { DBService } from 'src/db';
 
 @Injectable()
 export class UsersService {
   repository = new DBService().user;
 
-  async create(createUserDto: CreateUserDto) {
-    return this.repository.create({ data: createUserDto });
+  async create(params: CreateUserInterface) {
+    return this.repository.create(params);
   }
 
-  async findAll() {
-    return this.repository.findMany();
+  async findAll(params?: FindUserInterface) {
+    return this.repository.findMany(params);
   }
 
-  async findOne(id: string) {
-    return this.repository.findUnique({ where: { id } });
+  async findOne(params: FindOneUserInterface) {
+    return this.repository.findUnique(params);
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    return this.repository.update({ where: { id }, data: updateUserDto });
+  async update(params: UpdateUserInterface) {
+    return this.repository.update(params);
   }
 
-  async remove(id: string) {
-    return this.repository.delete({ where: { id } });
+  async remove(params: RemoveUserInterface) {
+    return this.repository.delete(params);
   }
 }

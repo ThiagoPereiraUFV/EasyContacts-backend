@@ -1,29 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { CreateContactDto } from './dto/create-contact.dto';
-import { UpdateContactDto } from './dto/update-contact.dto';
+import {
+  CreateContactInterface,
+  FindOneContactInterface,
+  FindContactInterface,
+  UpdateContactInterface,
+  RemoveContactInterface,
+} from './interfaces/crud.contacts';
 import { DBService } from 'src/db';
 
 @Injectable()
 export class ContactsService {
   repository = new DBService().contact;
 
-  async create(createContactDto: CreateContactDto) {
-    return this.repository.create({ data: createContactDto });
+  async create(params: CreateContactInterface) {
+    return this.repository.create(params);
   }
 
-  async findAll() {
-    return this.repository.findMany();
+  async findAll(params?: FindContactInterface) {
+    return this.repository.findMany(params);
   }
 
-  async findOne(id: string) {
-    return this.repository.findUnique({ where: { id } });
+  async findOne(params: FindOneContactInterface) {
+    return this.repository.findUnique(params);
   }
 
-  async update(id: string, updateContactDto: UpdateContactDto) {
-    return this.repository.update({ where: { id }, data: updateContactDto });
+  async update(params: UpdateContactInterface) {
+    return this.repository.update(params);
   }
 
-  async remove(id: string) {
-    return this.repository.delete({ where: { id } });
+  async remove(params: RemoveContactInterface) {
+    return this.repository.delete(params);
   }
 }

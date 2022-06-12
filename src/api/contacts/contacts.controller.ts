@@ -18,7 +18,7 @@ export class ContactsController {
 
   @Post()
   async create(@Body() createContactDto: CreateContactDto) {
-    return await this.contactsService.create(createContactDto);
+    return await this.contactsService.create({ data: createContactDto });
   }
 
   @Get()
@@ -28,7 +28,7 @@ export class ContactsController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.contactsService.findOne(id);
+    return await this.contactsService.findOne({ where: { id } });
   }
 
   @Patch(':id')
@@ -36,7 +36,10 @@ export class ContactsController {
     @Param('id') id: string,
     @Body() updateContactDto: UpdateContactDto,
   ) {
-    return await this.contactsService.update(id, updateContactDto);
+    return await this.contactsService.update({
+      where: { id },
+      data: updateContactDto,
+    });
   }
 
   @Put(':id')
@@ -44,11 +47,14 @@ export class ContactsController {
     @Param('id') id: string,
     @Body() replaceContactDto: UpdateContactDto,
   ) {
-    return await this.contactsService.update(id, replaceContactDto);
+    return await this.contactsService.update({
+      where: { id },
+      data: replaceContactDto,
+    });
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return await this.contactsService.remove(id);
+    return await this.contactsService.remove({ where: { id } });
   }
 }
