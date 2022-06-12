@@ -8,6 +8,7 @@ import {
   Delete,
   Put,
 } from '@nestjs/common';
+import { ValidationIdPipe } from 'src/pipes/validations.pipe';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -27,12 +28,15 @@ export class UsersController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', ValidationIdPipe) id: string) {
     return await this.usersService.findOne({ where: { id } });
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(
+    @Param('id', ValidationIdPipe) id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     return await this.usersService.update({
       where: { id },
       data: updateUserDto,
@@ -41,7 +45,7 @@ export class UsersController {
 
   @Put(':id')
   async replace(
-    @Param('id') id: string,
+    @Param('id', ValidationIdPipe) id: string,
     @Body() replaceUserDto: UpdateUserDto,
   ) {
     return await this.usersService.update({
@@ -51,7 +55,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', ValidationIdPipe) id: string) {
     return await this.usersService.remove({ where: { id } });
   }
 }
