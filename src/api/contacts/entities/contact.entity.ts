@@ -1,1 +1,3 @@
-export class Contact {}
+import { Contact } from '@prisma/client';
+
+export { Contact };
