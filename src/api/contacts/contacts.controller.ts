@@ -27,12 +27,15 @@ export class ContactsController {
     @Body(new JoiValidationPipe(createContactSchema))
     createContactDto: CreateContactDto,
   ) {
-    return await this.contactsService.create({ data: createContactDto });
+    return await this.contactsService.create({
+      data: createContactDto,
+      include: { user: true },
+    });
   }
 
   @Get()
   async findAll() {
-    return await this.contactsService.findAll();
+    return await this.contactsService.findAll({ include: { user: true } });
   }
 
   @Get(':id')
@@ -40,7 +43,10 @@ export class ContactsController {
     @Param('id', new EntityExistsValidationPipe(new ContactsService()))
     id: string,
   ) {
-    return await this.contactsService.findOne({ where: { id } });
+    return await this.contactsService.findOne({
+      where: { id },
+      include: { user: true },
+    });
   }
 
   @Patch(':id')
@@ -53,6 +59,7 @@ export class ContactsController {
     return await this.contactsService.update({
       where: { id },
       data: updateContactDto,
+      include: { user: true },
     });
   }
 
@@ -66,6 +73,7 @@ export class ContactsController {
     return await this.contactsService.update({
       where: { id },
       data: replaceContactDto,
+      include: { user: true },
     });
   }
 
@@ -74,6 +82,9 @@ export class ContactsController {
     @Param('id', new EntityExistsValidationPipe(new ContactsService()))
     id: string,
   ) {
-    return await this.contactsService.remove({ where: { id } });
+    return await this.contactsService.remove({
+      where: { id },
+      include: { user: true },
+    });
   }
 }

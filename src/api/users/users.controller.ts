@@ -28,12 +28,15 @@ export class UsersController {
     @Body(new JoiValidationPipe(createUserSchema), EmailExistsValidationPipe)
     createUserDto: CreateUserDto,
   ) {
-    return await this.usersService.create({ data: createUserDto });
+    return await this.usersService.create({
+      data: createUserDto,
+      include: { contacts: true },
+    });
   }
 
   @Get()
   async findAll() {
-    return await this.usersService.findAll();
+    return await this.usersService.findAll({ include: { contacts: true } });
   }
 
   @Get(':id')
@@ -41,7 +44,10 @@ export class UsersController {
     @Param('id', new EntityExistsValidationPipe(new UsersService()))
     id: string,
   ) {
-    return await this.usersService.findOne({ where: { id } });
+    return await this.usersService.findOne({
+      where: { id },
+      include: { contacts: true },
+    });
   }
 
   @Patch(':id')
@@ -54,6 +60,7 @@ export class UsersController {
     return await this.usersService.update({
       where: { id },
       data: updateUserDto,
+      include: { contacts: true },
     });
   }
 
@@ -67,6 +74,7 @@ export class UsersController {
     return await this.usersService.update({
       where: { id },
       data: replaceUserDto,
+      include: { contacts: true },
     });
   }
 
@@ -75,6 +83,9 @@ export class UsersController {
     @Param('id', new EntityExistsValidationPipe(new UsersService()))
     id: string,
   ) {
-    return await this.usersService.remove({ where: { id } });
+    return await this.usersService.remove({
+      where: { id },
+      include: { contacts: true },
+    });
   }
 }
