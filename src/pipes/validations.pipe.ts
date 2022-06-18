@@ -25,7 +25,7 @@ export class EntityExistsValidationPipe implements PipeTransform {
     });
 
     if (!entity) {
-      throw new NotFoundException('Entity does not exists');
+      throw new NotFoundException('Entity does not exist');
     }
 
     return id;
@@ -47,6 +47,33 @@ export class EmailExistsValidationPipe implements PipeTransform {
 
     if (user) {
       throw new BadRequestException('Email already exists');
+    }
+
+    return value;
+  }
+}
+
+@Injectable()
+export class UserExistsValidationPipe implements PipeTransform {
+  constructor(private readonly usersService: UsersService) {}
+
+  async transform(value: any) {
+    if (!value.userId) {
+      return value;
+    }
+
+    try {
+      new ObjectId(value.userId);
+    } catch (err) {
+      throw new BadRequestException('Invalid user id');
+    }
+
+    const user = await this.usersService.findOne({
+      where: { id: value.userId },
+    });
+
+    if (!user) {
+      throw new BadRequestException('User does not exist');
     }
 
     return value;

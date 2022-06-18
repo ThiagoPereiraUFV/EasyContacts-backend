@@ -3,7 +3,7 @@ import * as Joi from 'joi';
 const schema = {
   name: Joi.string(),
   surname: Joi.string(),
-  user: Joi.string(),
+  userId: Joi.string().hex().length(24),
   phone: Joi.string(),
   email: Joi.string().email(),
   address: Joi.string(),

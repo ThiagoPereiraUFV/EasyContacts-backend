@@ -11,6 +11,7 @@ import {
 import {
   EntityExistsValidationPipe,
   JoiValidationPipe,
+  UserExistsValidationPipe,
 } from 'src/pipes/validations.pipe';
 import { ContactsService } from './contacts.service';
 import { CreateContactDto } from './dto/create-contact.dto';
@@ -24,7 +25,7 @@ export class ContactsController {
 
   @Post()
   async create(
-    @Body(new JoiValidationPipe(createContactSchema))
+    @Body(new JoiValidationPipe(createContactSchema), UserExistsValidationPipe)
     createContactDto: CreateContactDto,
   ) {
     return await this.contactsService.create({
@@ -53,7 +54,7 @@ export class ContactsController {
   async update(
     @Param('id', new EntityExistsValidationPipe(new ContactsService()))
     id: string,
-    @Body(new JoiValidationPipe(updateContactSchema))
+    @Body(new JoiValidationPipe(updateContactSchema), UserExistsValidationPipe)
     updateContactDto: UpdateContactDto,
   ) {
     return await this.contactsService.update({
@@ -67,7 +68,7 @@ export class ContactsController {
   async replace(
     @Param('id', new EntityExistsValidationPipe(new ContactsService()))
     id: string,
-    @Body(new JoiValidationPipe(createContactSchema))
+    @Body(new JoiValidationPipe(createContactSchema), UserExistsValidationPipe)
     replaceContactDto: UpdateContactDto,
   ) {
     return await this.contactsService.update({
