@@ -12,7 +12,7 @@ import {
   EntityExistsValidationPipe,
   JoiValidationPipe,
   UserExistsValidationPipe,
-} from 'src/pipes/validations.pipe';
+} from '../../pipes/validations.pipe';
 import { ContactsService } from './contacts.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
