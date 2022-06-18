@@ -8,17 +8,25 @@ import {
   Delete,
   Put,
 } from '@nestjs/common';
-import { ValidationIdPipe } from 'src/pipes/validations.pipe';
+import {
+  EntityExistsValidationPipe,
+  JoiValidationPipe,
+} from 'src/pipes/validations.pipe';
 import { ContactsService } from './contacts.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
+import { createContactSchema } from './schemas/create-contact.schema';
+import { updateContactSchema } from './schemas/update-contact.schema';
 
 @Controller('contacts')
 export class ContactsController {
   constructor(private readonly contactsService: ContactsService) {}
 
   @Post()
-  async create(@Body() createContactDto: CreateContactDto) {
+  async create(
+    @Body(new JoiValidationPipe(createContactSchema))
+    createContactDto: CreateContactDto,
+  ) {
     return await this.contactsService.create({ data: createContactDto });
   }
 
@@ -28,14 +36,19 @@ export class ContactsController {
   }
 
   @Get(':id')
-  async findOne(@Param('id', ValidationIdPipe) id: string) {
+  async findOne(
+    @Param('id', new EntityExistsValidationPipe(new ContactsService()))
+    id: string,
+  ) {
     return await this.contactsService.findOne({ where: { id } });
   }
 
   @Patch(':id')
   async update(
-    @Param('id', ValidationIdPipe) id: string,
-    @Body() updateContactDto: UpdateContactDto,
+    @Param('id', new EntityExistsValidationPipe(new ContactsService()))
+    id: string,
+    @Body(new JoiValidationPipe(updateContactSchema))
+    updateContactDto: UpdateContactDto,
   ) {
     return await this.contactsService.update({
       where: { id },
@@ -45,8 +58,10 @@ export class ContactsController {
 
   @Put(':id')
   async replace(
-    @Param('id', ValidationIdPipe) id: string,
-    @Body() replaceContactDto: UpdateContactDto,
+    @Param('id', new EntityExistsValidationPipe(new ContactsService()))
+    id: string,
+    @Body(new JoiValidationPipe(createContactSchema))
+    replaceContactDto: UpdateContactDto,
   ) {
     return await this.contactsService.update({
       where: { id },
@@ -55,7 +70,10 @@ export class ContactsController {
   }
 
   @Delete(':id')
-  async remove(@Param('id', ValidationIdPipe) id: string) {
+  async remove(
+    @Param('id', new EntityExistsValidationPipe(new ContactsService()))
+    id: string,
+  ) {
     return await this.contactsService.remove({ where: { id } });
   }
 }

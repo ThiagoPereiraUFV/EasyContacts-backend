@@ -7,25 +7,27 @@ import {
   Param,
   Delete,
   Put,
-  UsePipes,
 } from '@nestjs/common';
 import {
   EmailExistsValidationPipe,
   JoiValidationPipe,
-  ValidationIdPipe,
+  EntityExistsValidationPipe,
 } from 'src/pipes/validations.pipe';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { createUserSchema } from './schemas/create-user.schema';
+import { updateUserSchema } from './schemas/update-user.schema';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @UsePipes(new JoiValidationPipe(createUserSchema), EmailExistsValidationPipe)
-  async create(@Body() createUserDto: CreateUserDto) {
+  async create(
+    @Body(new JoiValidationPipe(createUserSchema), EmailExistsValidationPipe)
+    createUserDto: CreateUserDto,
+  ) {
     return await this.usersService.create({ data: createUserDto });
   }
 
@@ -35,14 +37,19 @@ export class UsersController {
   }
 
   @Get(':id')
-  async findOne(@Param('id', ValidationIdPipe) id: string) {
+  async findOne(
+    @Param('id', new EntityExistsValidationPipe(new UsersService()))
+    id: string,
+  ) {
     return await this.usersService.findOne({ where: { id } });
   }
 
   @Patch(':id')
   async update(
-    @Param('id', ValidationIdPipe) id: string,
-    @Body() updateUserDto: UpdateUserDto,
+    @Param('id', new EntityExistsValidationPipe(new UsersService()))
+    id: string,
+    @Body(new JoiValidationPipe(updateUserSchema), EmailExistsValidationPipe)
+    updateUserDto: UpdateUserDto,
   ) {
     return await this.usersService.update({
       where: { id },
@@ -52,8 +59,10 @@ export class UsersController {
 
   @Put(':id')
   async replace(
-    @Param('id', ValidationIdPipe) id: string,
-    @Body() replaceUserDto: UpdateUserDto,
+    @Param('id', new EntityExistsValidationPipe(new UsersService()))
+    id: string,
+    @Body(new JoiValidationPipe(createUserSchema), EmailExistsValidationPipe)
+    replaceUserDto: UpdateUserDto,
   ) {
     return await this.usersService.update({
       where: { id },
@@ -62,7 +71,10 @@ export class UsersController {
   }
 
   @Delete(':id')
-  async remove(@Param('id', ValidationIdPipe) id: string) {
+  async remove(
+    @Param('id', new EntityExistsValidationPipe(new UsersService()))
+    id: string,
+  ) {
     return await this.usersService.remove({ where: { id } });
   }
 }

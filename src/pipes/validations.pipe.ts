@@ -1,15 +1,52 @@
-import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common';
+import {
+  PipeTransform,
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { ObjectId } from 'bson';
 import { ObjectSchema } from 'joi';
+import { ContactsService } from 'src/api/contacts/contacts.service';
 import { UsersService } from '../api/users/users.service';
 
 @Injectable()
-export class ValidationIdPipe implements PipeTransform {
-  transform(value: any) {
+export class EntityExistsValidationPipe implements PipeTransform {
+  constructor(private service: UsersService | ContactsService) {}
+
+  async transform(id: string) {
     try {
-      new ObjectId(value);
+      new ObjectId(id);
     } catch (err) {
       throw new BadRequestException('Invalid param id');
+    }
+
+    const entity = await this.service.findOne({
+      where: { id },
+    });
+
+    if (!entity) {
+      throw new NotFoundException('Entity does not exists');
+    }
+
+    return id;
+  }
+}
+
+@Injectable()
+export class EmailExistsValidationPipe implements PipeTransform {
+  constructor(private readonly usersService: UsersService) {}
+
+  async transform(value: any) {
+    if (!value.email) {
+      return value;
+    }
+
+    const user = await this.usersService.findOne({
+      where: { email: value.email },
+    });
+
+    if (user) {
+      throw new BadRequestException('Email already exists');
     }
 
     return value;
@@ -30,20 +67,5 @@ export class JoiValidationPipe implements PipeTransform {
     }
 
     return value;
-  }
-}
-
-@Injectable()
-export class EmailExistsValidationPipe implements PipeTransform {
-  constructor(private readonly usersService: UsersService) {}
-
-  async transform({ email }: any) {
-    const user = await this.usersService.findOne({ where: { email } });
-
-    if (user) {
-      throw new BadRequestException('Email already exists');
-    }
-
-    return email;
   }
 }
