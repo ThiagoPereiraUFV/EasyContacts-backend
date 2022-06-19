@@ -31,4 +31,8 @@ export class ContactsService {
   async remove(params: RemoveContactInterface) {
     return this.repository.delete(params);
   }
+
+  async removeAll() {
+    return this.repository.deleteMany();
+  }
 }

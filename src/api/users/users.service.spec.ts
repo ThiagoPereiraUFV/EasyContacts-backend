@@ -6,12 +6,14 @@ describe('UsersService', () => {
   let service: UsersService;
   const users = [mockUser(), mockUser()];
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [UsersService],
     }).compile();
 
     service = module.get<UsersService>(UsersService);
+
+    await service.removeAll();
   });
 
   it('UsersService should be defined', () => {

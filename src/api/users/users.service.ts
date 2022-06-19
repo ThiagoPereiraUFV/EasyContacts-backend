@@ -31,4 +31,8 @@ export class UsersService {
   async remove(params: RemoveUserInterface) {
     return this.repository.delete(params);
   }
+
+  async removeAll() {
+    return this.repository.deleteMany();
+  }
 }
