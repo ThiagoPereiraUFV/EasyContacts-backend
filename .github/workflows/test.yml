@@ -16,6 +16,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     env:
+      NODE_ENV: 'test'
       DATABASE_URL: "mongodb+srv://tester:testerpassword@easycontacts.yvbgh.mongodb.net/${{env.NODE_ENV}}?retryWrites=true&w=majority"
 
     name: Node ${{ matrix.node }} ${{ matrix.platform }}
