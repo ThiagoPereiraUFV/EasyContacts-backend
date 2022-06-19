@@ -10,7 +10,7 @@ jobs:
   test:
     strategy:
       matrix:
-        node: ['14']
+        node: ['12', '14']
         platform: ['ubuntu-latest', macos-latest]
 
     runs-on: ${{ matrix.platform }}
@@ -29,5 +29,8 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
-      - name: Run tests
+      - name: Run unit tests
         run: yarn test:cov --ci
+
+      - name: Run e2e tests
+        run: yarn test:e2e --ci
