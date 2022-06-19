@@ -29,6 +29,9 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
+      - name: Run linter
+        run: yarn lint
+
       - name: Run unit tests
         run: yarn test:cov --ci
 
