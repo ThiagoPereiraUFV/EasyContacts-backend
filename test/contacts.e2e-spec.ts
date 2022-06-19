@@ -1,18 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { UsersModule } from './../src/api/users/users.module';
-import { mockUser } from '../src/api/users/utils/users.mock';
+import { ContactsModule } from './../src/api/contacts/contacts.module';
+import { mockContact, mockUser } from '../src/api/contacts/utils/contacts.mock';
+import { UsersModule } from '../src/api/users/users.module';
 
 jest.setTimeout(30000);
 
-describe('UsersController (e2e)', () => {
+describe('ContactsController (e2e)', () => {
   let app: INestApplication;
-  const users = [mockUser(), mockUser()];
+  const user = mockUser();
+  const contacts = [];
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [UsersModule],
+      imports: [UsersModule, ContactsModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
@@ -22,37 +24,46 @@ describe('UsersController (e2e)', () => {
   it('/users (POST) 200', () => {
     return request(app.getHttpServer())
       .post('/users')
-      .send(users[0])
+      .send(user)
       .expect(201)
       .expect((req) => {
         expect(req.body).toBeDefined();
         expect(req.body).toBeInstanceOf(Object);
-        expect(req.body).toMatchObject(users[0]);
-        Object.assign(users[0], req.body);
+        expect(req.body).toMatchObject(user);
+        Object.assign(user, req.body);
+        for (let i = 0; i < 2; i++) {
+          contacts.push(mockContact(user.id));
+        }
       });
   });
 
-  it('/users (POST) 400', () => {
+  it('/contacts (POST) 200', () => {
     return request(app.getHttpServer())
-      .post('/users')
-      .send(users[0])
-      .expect(400);
+      .post('/contacts')
+      .send(contacts[0])
+      .expect(201)
+      .expect((req) => {
+        expect(req.body).toBeDefined();
+        expect(req.body).toBeInstanceOf(Object);
+        expect(req.body).toMatchObject(contacts[0]);
+        Object.assign(contacts[0], req.body);
+      });
   });
 
-  it('/users/:id (GET)', () => {
+  it('/contacts/:id (GET)', () => {
     return request(app.getHttpServer())
-      .get(`/users/${users[0].id}`)
+      .get(`/contacts/${contacts[0].id}`)
       .expect(200)
       .expect((req) => {
         expect(req.body).toBeDefined();
         expect(req.body).toBeInstanceOf(Object);
-        expect(req.body).toMatchObject(users[0]);
+        expect(req.body).toMatchObject(contacts[0]);
       });
   });
 
-  it('/users (GET)', () => {
+  it('/contacts (GET)', () => {
     return request(app.getHttpServer())
-      .get('/users')
+      .get('/contacts')
       .expect(200)
       .expect((req) => {
         expect(req.body).toBeDefined();
@@ -60,10 +71,20 @@ describe('UsersController (e2e)', () => {
       });
   });
 
-  it('/users/:id (PATCH)', () => {
+  it('/contacts/:id (PATCH)', () => {
     return request(app.getHttpServer())
-      .patch(`/users/${users[0].id}`)
-      .send(users[1])
+      .patch(`/contacts/${contacts[0].id}`)
+      .send(contacts[1])
+      .expect(200)
+      .expect((req) => {
+        expect(req.body).toBeDefined();
+        expect(req.body).toBeInstanceOf(Object);
+      });
+  });
+
+  it('/contacts/:id (DELETE)', () => {
+    return request(app.getHttpServer())
+      .delete(`/contacts/${contacts[0].id}`)
       .expect(200)
       .expect((req) => {
         expect(req.body).toBeDefined();
@@ -73,7 +94,7 @@ describe('UsersController (e2e)', () => {
 
   it('/users/:id (DELETE)', () => {
     return request(app.getHttpServer())
-      .delete(`/users/${users[0].id}`)
+      .delete(`/users/${user.id}`)
       .expect(200)
       .expect((req) => {
         expect(req.body).toBeDefined();
