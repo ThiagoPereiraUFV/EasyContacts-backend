@@ -3,8 +3,6 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { mockUser } from './utils/users.mock';
 
-jest.setTimeout(10000);
-
 describe('UsersController', () => {
   let controller: UsersController;
   const users = [mockUser(), mockUser()];

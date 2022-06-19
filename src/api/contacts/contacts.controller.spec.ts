@@ -5,8 +5,6 @@ import { ContactsController } from './contacts.controller';
 import { ContactsService } from './contacts.service';
 import { mockContact, mockUser } from './utils/contacts.mock';
 
-jest.setTimeout(15000);
-
 describe('ContactsController', () => {
   let controller: ContactsController;
   let usersService: UsersService;
