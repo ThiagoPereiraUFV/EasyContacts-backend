@@ -24,12 +24,12 @@ describe('ContactsService', () => {
       contacts.push(mockContact(user.id));
     }
 
-    await service.removeAll();
+    // await service.removeAll();
   });
 
-  afterAll(async () => {
-    await usersService.removeAll();
-  });
+  // afterAll(async () => {
+  //   await usersService.removeAll();
+  // });
 
   it('ContactsService should be defined', () => {
     expect(service).toBeDefined();
@@ -77,5 +77,10 @@ describe('ContactsService', () => {
       const result = await service.remove({ where: { id: contact.id } });
       expect(result).toBeDefined();
     }
+  });
+
+  it('Should delete user', async () => {
+    const result = await usersService.remove({ where: { id: user.id } });
+    expect(result).toBeDefined();
   });
 });
