@@ -15,6 +15,9 @@ jobs:
 
     runs-on: ${{ matrix.platform }}
 
+    env:
+      DATABASE_URL: "mongodb+srv://tester:testerpassword@easycontacts.yvbgh.mongodb.net/${NODE_ENV}?retryWrites=true&w=majority"
+
     name: Node ${{ matrix.node }} ${{ matrix.platform }}
 
     steps:
@@ -28,9 +31,6 @@ jobs:
 
       - name: Install Dependencies
         run: yarn
-
-      - name: Set env
-        run: echo "DATABASE_URL=mongodb+srv://tester:testerpassword@easycontacts.yvbgh.mongodb.net/${NODE_ENV}?retryWrites=true&w=majority" >> $GITHUB_ENV
 
       - name: Run linter
         run: yarn lint
