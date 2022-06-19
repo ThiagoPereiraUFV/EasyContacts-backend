@@ -15,7 +15,7 @@ describe('ContactsController', () => {
     controller = module.get<ContactsController>(ContactsController);
   });
 
-  it('should be defined', () => {
+  it('ContactsController should be defined', () => {
     expect(controller).toBeDefined();
   });
 });

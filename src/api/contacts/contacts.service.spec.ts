@@ -12,7 +12,7 @@ describe('ContactsService', () => {
     service = module.get<ContactsService>(ContactsService);
   });
 
-  it('should be defined', () => {
+  it('ContactsService should be defined', () => {
     expect(service).toBeDefined();
   });
 });
