@@ -5,12 +5,12 @@ import { ContactsModule } from './../src/api/contacts/contacts.module';
 import { mockContact, mockUser } from '../src/api/contacts/utils/contacts.mock';
 import { AppModule } from '../src/app.module';
 import { UsersService } from '../src/api/users/users.service';
-import { User } from 'src/api/users/entities/user.entity';
+import { User } from '../src/api/users/entities/user.entity';
 
 jest.setTimeout(30000);
 
 describe('ContactsController (e2e)', () => {
-  let service: UsersService;
+  let usersService: UsersService;
   let app: INestApplication;
   let authuser: User;
   let jwt: string;
@@ -26,9 +26,9 @@ describe('ContactsController (e2e)', () => {
       providers: [UsersService],
     }).compile();
 
-    service = module.get<UsersService>(UsersService);
+    usersService = module.get<UsersService>(UsersService);
 
-    authuser = await service.create({ data: user });
+    authuser = await usersService.create({ data: user });
 
     for (let i = 0; i < 2; i++) {
       contacts.push(mockContact(authuser.id));
@@ -39,7 +39,7 @@ describe('ContactsController (e2e)', () => {
   });
 
   afterAll(async () => {
-    await service.remove({ where: { id: authuser.id } });
+    await usersService.remove({ where: { id: authuser.id } });
   });
 
   it('/auth/login (POST) 201', () => {

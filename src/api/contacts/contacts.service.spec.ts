@@ -23,19 +23,17 @@ describe('ContactsService', () => {
     for (let i = 0; i < 2; i++) {
       contacts.push(mockContact(user.id));
     }
-
-    // await service.removeAll();
   });
 
-  // afterAll(async () => {
-  //   await usersService.removeAll();
-  // });
+  afterAll(async () => {
+    await usersService.remove({ where: { id: user.id } });
+  });
 
   it('ContactsService should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  it('Should create an array of contacts', async () => {
+  it('ContactsService should create an array of contacts', async () => {
     for (const contact of contacts) {
       const result = await service.create({ data: contact });
       expect(result).toBeDefined();
@@ -44,26 +42,24 @@ describe('ContactsService', () => {
     }
   });
 
-  it('Should return an array of contacts', async () => {
+  it('ContactsService should return an array of contacts', async () => {
     const result = await service.findAll();
     expect(result).toBeDefined();
-    // expect(result).toMatchObject(contacts);
-    // expect(result).toHaveLength(contacts.length);
   });
 
-  it('Should return a contact', async () => {
+  it('ContactsService should return a contact', async () => {
     const result = await service.findOne({ where: { id: contacts[0].id } });
     expect(result).toBeDefined();
     expect(result).toMatchObject(contacts[0]);
   });
 
-  it('Should return a second contact', async () => {
+  it('ContactsService should return a second contact', async () => {
     const result = await service.findOne({ where: { id: contacts[1].id } });
     expect(result).toBeDefined();
     expect(result).toMatchObject(contacts[1]);
   });
 
-  it('Should update a contact', async () => {
+  it('ContactsService should update a contact', async () => {
     const result = await service.update({
       where: { id: contacts[0].id },
       data: { name: contacts[1].name },
@@ -72,15 +68,10 @@ describe('ContactsService', () => {
     expect(result).toMatchObject({ name: contacts[1].name });
   });
 
-  it('Should delete contacts', async () => {
+  it('ContactsService should delete contacts', async () => {
     for (const contact of contacts) {
       const result = await service.remove({ where: { id: contact.id } });
       expect(result).toBeDefined();
     }
-  });
-
-  it('Should delete user', async () => {
-    const result = await usersService.remove({ where: { id: user.id } });
-    expect(result).toBeDefined();
   });
 });

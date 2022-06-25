@@ -10,7 +10,7 @@ import { User } from '../src/api/users/entities/user.entity';
 jest.setTimeout(30000);
 
 describe('UsersController (e2e)', () => {
-  let service: UsersService;
+  let usersService: UsersService;
   let app: INestApplication;
   let authuser: User;
   let jwt: string;
@@ -25,16 +25,16 @@ describe('UsersController (e2e)', () => {
       providers: [UsersService],
     }).compile();
 
-    service = module.get<UsersService>(UsersService);
+    usersService = module.get<UsersService>(UsersService);
 
-    authuser = await service.create({ data: users[0] });
+    authuser = await usersService.create({ data: users[0] });
 
     app = moduleFixture.createNestApplication();
     await app.init();
   });
 
   afterAll(async () => {
-    await service.remove({ where: { id: authuser.id } });
+    await usersService.remove({ where: { id: authuser.id } });
   });
 
   it('/auth/login (POST) 201', () => {

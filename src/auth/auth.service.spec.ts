@@ -2,12 +2,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersModule } from '../api/users/users.module';
 import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
+import { mockUser } from '../api/users/utils/users.mock';
 import { jwt } from './jwt';
+import { UsersService } from '../api/users/users.service';
+import { User } from '../api/users/entities/user.entity';
 
 describe('AuthService', () => {
   let service: AuthService;
+  let usersService: UsersService;
+  let user: User;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         UsersModule,
@@ -20,9 +25,31 @@ describe('AuthService', () => {
     }).compile();
 
     service = module.get<AuthService>(AuthService);
+    usersService = module.get<UsersService>(UsersService);
+
+    user = await usersService.create({ data: mockUser() });
   });
 
-  it('should be defined', () => {
+  afterAll(async () => {
+    await usersService.remove({ where: { id: user.id } });
+  });
+
+  it('AuthService should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('AuthService should return user', async () => {
+    const result = await service.validateUser(user.email, user.password);
+    expect(result).toBeDefined();
+    expect(result).toBeInstanceOf(Object);
+  });
+
+  it('AuthService should login user', async () => {
+    const result = await service.login(user);
+    expect(result).toBeDefined();
+    expect(result).toBeInstanceOf(Object);
+    expect(result.user).toBeDefined();
+    expect(result.user).toBeInstanceOf(Object);
+    expect(result.jwt).toBeDefined();
   });
 });

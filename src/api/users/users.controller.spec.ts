@@ -20,7 +20,7 @@ describe('UsersController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('Should create an array of users', async () => {
+  it('UsersController should create an array of users', async () => {
     for (const user of users) {
       const result = await controller.create(user);
       expect(result).toBeDefined();
@@ -29,26 +29,24 @@ describe('UsersController', () => {
     }
   });
 
-  it('Should return an array of users', async () => {
+  it('UsersController should return an array of users', async () => {
     const result = await controller.findAll();
     expect(result).toBeDefined();
-    // expect(result).toMatchObject(users);
-    // expect(result).toHaveLength(users.length);
   });
 
-  it('Should return a user', async () => {
+  it('UsersController should return a user', async () => {
     const result = await controller.findOne(users[0].id);
     expect(result).toBeDefined();
     expect(result).toMatchObject(users[0]);
   });
 
-  it('Should return a second user', async () => {
+  it('UsersController should return a second user', async () => {
     const result = await controller.findOne(users[1].id);
     expect(result).toBeDefined();
     expect(result).toMatchObject(users[1]);
   });
 
-  it('Should update a user', async () => {
+  it('UsersController should update a user', async () => {
     const result = await controller.update(users[0].id, {
       name: users[1].name,
     });
@@ -56,7 +54,7 @@ describe('UsersController', () => {
     expect(result).toMatchObject({ name: users[1].name });
   });
 
-  it('Should delete users', async () => {
+  it('UsersController should delete users', async () => {
     for (const user of users) {
       const result = await controller.remove(user.id);
       expect(result).toBeDefined();
