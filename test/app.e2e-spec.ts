@@ -15,7 +15,7 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/ (GET) 200', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
@@ -24,5 +24,12 @@ describe('AppController (e2e)', () => {
           `App is running on port ${process.env.PORT || 4000}`,
         );
       });
+  });
+
+  it('/auth/login (POST) 201', () => {
+    return request(app.getHttpServer())
+      .post('/auth/login')
+      .send({})
+      .expect(401);
   });
 });

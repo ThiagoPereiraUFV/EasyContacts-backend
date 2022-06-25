@@ -3,56 +3,97 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { UsersModule } from './../src/api/users/users.module';
 import { mockUser } from '../src/api/users/utils/users.mock';
+import { AppModule } from '../src/app.module';
+import { UsersService } from '../src/api/users/users.service';
+import { User } from '../src/api/users/entities/user.entity';
 
 jest.setTimeout(30000);
 
 describe('UsersController (e2e)', () => {
+  let service: UsersService;
   let app: INestApplication;
-  const users = [mockUser(), mockUser()];
+  let authuser: User;
+  let jwt: string;
+  const users = [mockUser(), mockUser(), mockUser()];
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [UsersModule],
+      imports: [AppModule, UsersModule],
     }).compile();
+
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [UsersService],
+    }).compile();
+
+    service = module.get<UsersService>(UsersService);
+
+    authuser = await service.create({ data: users[0] });
 
     app = moduleFixture.createNestApplication();
     await app.init();
   });
 
-  it('/users (POST) 200', () => {
+  afterAll(async () => {
+    await service.remove({ where: { id: authuser.id } });
+  });
+
+  it('/auth/login (POST) 201', () => {
     return request(app.getHttpServer())
-      .post('/users')
-      .send(users[0])
+      .post('/auth/login')
+      .send({
+        email: authuser.email,
+        password: authuser.password,
+      })
       .expect(201)
       .expect((req) => {
         expect(req.body).toBeDefined();
         expect(req.body).toBeInstanceOf(Object);
-        expect(req.body).toMatchObject(users[0]);
-        Object.assign(users[0], req.body);
+        expect(req.body.user).toBeDefined();
+        expect(req.body.user).toBeInstanceOf(Object);
+        expect(req.body.jwt).toBeDefined();
+        authuser = req.body.user;
+        jwt = req.body.jwt;
+      });
+  });
+
+  it('/users (POST) 200', () => {
+    return request(app.getHttpServer())
+      .post('/users')
+      .set({ Authorization: `Bearer ${jwt}` })
+      .send(users[1])
+      .expect(201)
+      .expect((req) => {
+        expect(req.body).toBeDefined();
+        expect(req.body).toBeInstanceOf(Object);
+        expect(req.body).toMatchObject(users[1]);
+        Object.assign(users[1], req.body);
       });
   });
 
   it('/users (POST) 400', () => {
     return request(app.getHttpServer())
       .post('/users')
-      .send(users[0])
+      .set({ Authorization: `Bearer ${jwt}` })
+      .send(users[1])
       .expect(400);
   });
 
-  it('/users/:id (GET)', () => {
+  it('/users/:id (GET) 200', () => {
     return request(app.getHttpServer())
-      .get(`/users/${users[0].id}`)
+      .get(`/users/${users[1].id}`)
+      .set({ Authorization: `Bearer ${jwt}` })
       .expect(200)
       .expect((req) => {
         expect(req.body).toBeDefined();
         expect(req.body).toBeInstanceOf(Object);
-        expect(req.body).toMatchObject(users[0]);
+        expect(req.body).toMatchObject(users[1]);
       });
   });
 
-  it('/users (GET)', () => {
+  it('/users (GET) 200', () => {
     return request(app.getHttpServer())
       .get('/users')
+      .set({ Authorization: `Bearer ${jwt}` })
       .expect(200)
       .expect((req) => {
         expect(req.body).toBeDefined();
@@ -60,10 +101,11 @@ describe('UsersController (e2e)', () => {
       });
   });
 
-  it('/users/:id (PATCH)', () => {
+  it('/users/:id (PATCH) 200', () => {
     return request(app.getHttpServer())
-      .patch(`/users/${users[0].id}`)
-      .send(users[1])
+      .patch(`/users/${users[1].id}`)
+      .set({ Authorization: `Bearer ${jwt}` })
+      .send(users[2])
       .expect(200)
       .expect((req) => {
         expect(req.body).toBeDefined();
@@ -71,9 +113,10 @@ describe('UsersController (e2e)', () => {
       });
   });
 
-  it('/users/:id (DELETE)', () => {
+  it('/users/:id (DELETE) 200', () => {
     return request(app.getHttpServer())
-      .delete(`/users/${users[0].id}`)
+      .delete(`/users/${users[1].id}`)
+      .set({ Authorization: `Bearer ${jwt}` })
       .expect(200)
       .expect((req) => {
         expect(req.body).toBeDefined();

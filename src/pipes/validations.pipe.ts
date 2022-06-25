@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { ObjectId } from 'bson';
 import { ObjectSchema } from 'joi';
-import { ContactsService } from 'src/api/contacts/contacts.service';
+import { ContactsService } from '../api/contacts/contacts.service';
 import { UsersService } from '../api/users/users.service';
 
 @Injectable()
