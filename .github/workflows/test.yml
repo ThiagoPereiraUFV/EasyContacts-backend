@@ -33,7 +33,7 @@ jobs:
         run: yarn
 
       - name: Run linter
-        run: yarn lint --max-warnings=0
+        run: yarn lint:ci
 
       - name: Run unit tests
         run: yarn test:cov --ci
