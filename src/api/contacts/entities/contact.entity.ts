@@ -1,3 +1,3 @@
 import { Contact } from '@prisma/client';
 
-export { Contact };
+export interface IContact extends Contact {}

@@ -8,6 +8,7 @@ import {
   Delete,
   Put,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import {
   EntityExistsValidationPipe,
@@ -20,6 +21,7 @@ import { UpdateContactDto } from './dto/update-contact.dto';
 import { createContactSchema } from './schemas/create-contact.schema';
 import { updateContactSchema } from './schemas/update-contact.schema';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
+import { Request } from 'express';
 
 @UseGuards(JwtAuthGuard)
 @Controller('contacts')
@@ -40,6 +42,11 @@ export class ContactsController {
   @Get()
   async findAll() {
     return await this.contactsService.findAll({ include: { user: true } });
+  }
+
+  @Get('mine')
+  async mine(@Req() req: Request) {
+    return req.user.contacts;
   }
 
   @Get(':id')
