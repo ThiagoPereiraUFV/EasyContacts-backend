@@ -5,14 +5,14 @@ import { ContactsModule } from './../src/api/contacts/contacts.module';
 import { mockContact, mockUser } from '../src/api/contacts/utils/contacts.mock';
 import { AppModule } from '../src/app.module';
 import { UsersService } from '../src/api/users/users.service';
-import { User } from '../src/api/users/entities/user.entity';
+import { IUser } from '../src/api/users/entities/user.entity';
 
 jest.setTimeout(30000);
 
 describe('ContactsController (e2e)', () => {
   let usersService: UsersService;
   let app: INestApplication;
-  let authuser: User;
+  let authuser: IUser;
   let jwt: string;
   const user = mockUser();
   const contacts = [];

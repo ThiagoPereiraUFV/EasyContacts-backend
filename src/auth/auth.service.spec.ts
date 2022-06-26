@@ -5,12 +5,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { mockUser } from '../api/users/utils/users.mock';
 import { jwt } from './jwt';
 import { UsersService } from '../api/users/users.service';
-import { User } from '../api/users/entities/user.entity';
+import { IUser } from '../api/users/entities/user.entity';
 
 describe('AuthService', () => {
   let service: AuthService;
   let usersService: UsersService;
-  let user: User;
+  let user: IUser;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({

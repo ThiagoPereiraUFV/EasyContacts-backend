@@ -2,14 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from '../api/users/users.service';
 import { AppController } from './app.controller';
 import { mockUser } from '../api/users/utils/users.mock';
-import { User } from '../api/users/entities/user.entity';
+import { IUser } from '../api/users/entities/user.entity';
 import { AuthModule } from '../auth/auth.module';
 import { AppService } from './app.service';
 
 describe('AppController', () => {
   let controller: AppController;
   let usersService: UsersService;
-  let user: User;
+  let user: IUser;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({

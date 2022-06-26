@@ -5,14 +5,14 @@ import { UsersModule } from './../src/api/users/users.module';
 import { mockUser } from '../src/api/users/utils/users.mock';
 import { AppModule } from '../src/app.module';
 import { UsersService } from '../src/api/users/users.service';
-import { User } from '../src/api/users/entities/user.entity';
+import { IUser } from '../src/api/users/entities/user.entity';
 
 jest.setTimeout(30000);
 
 describe('UsersController (e2e)', () => {
   let usersService: UsersService;
   let app: INestApplication;
-  let authuser: User;
+  let authuser: IUser;
   let jwt: string;
   const users = [mockUser(), mockUser(), mockUser()];
 
