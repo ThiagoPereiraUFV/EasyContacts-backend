@@ -15,7 +15,11 @@ export class EntityExistsValidationPipe implements PipeTransform {
 
   async transform(id: string) {
     try {
-      new ObjectId(id);
+      const oid = new ObjectId(id);
+
+      if (!oid) {
+        throw new BadRequestException('Invalid param id');
+      }
     } catch (err) {
       throw new BadRequestException('Invalid param id');
     }
@@ -63,7 +67,11 @@ export class UserExistsValidationPipe implements PipeTransform {
     }
 
     try {
-      new ObjectId(value.userId);
+      const oid = new ObjectId(value.userId);
+
+      if (!oid) {
+        throw new BadRequestException('Invalid user id');
+      }
     } catch (err) {
       throw new BadRequestException('Invalid user id');
     }

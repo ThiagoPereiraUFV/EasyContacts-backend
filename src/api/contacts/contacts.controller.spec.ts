@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { IUser } from '../users/entities/user.entity';
+import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { ContactsController } from './contacts.controller';
 import { ContactsService } from './contacts.service';
@@ -8,7 +8,7 @@ import { mockContact, mockUser } from './utils/contacts.mock';
 describe('ContactsController', () => {
   let controller: ContactsController;
   let usersService: UsersService;
-  let user: IUser;
+  let user: User;
   const contacts = [];
 
   beforeAll(async () => {
