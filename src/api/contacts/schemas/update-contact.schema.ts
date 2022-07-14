@@ -1,4 +1,5 @@
 import * as Joi from 'joi';
+import { UpdateContactDto } from '../dto/update-contact.dto';
 
 const schema = {
   name: Joi.string(),
@@ -9,8 +10,10 @@ const schema = {
   address: Joi.string(),
   annotations: Joi.string(),
   avatar: Joi.string().uri(),
+  createdAt: Joi.date().optional(),
+  updatedAt: Joi.date().optional(),
 };
 
-const updateContactSchema = Joi.object(schema);
+const updateContactSchema = Joi.object<UpdateContactDto, true>(schema);
 
 export { updateContactSchema };

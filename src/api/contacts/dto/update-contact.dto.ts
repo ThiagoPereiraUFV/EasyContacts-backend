@@ -1,3 +1,4 @@
 import { Prisma } from '@prisma/client';
 
-export interface UpdateContactDto extends Prisma.ContactUpdateInput {}
+export interface UpdateContactDto
+  extends Prisma.ContactUpdateWithoutUserInput {}
