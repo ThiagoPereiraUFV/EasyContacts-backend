@@ -5,6 +5,7 @@ import { mockUser } from '../api/users/utils/users.mock';
 import { IUser } from '../api/users/entities/user.entity';
 import { AuthModule } from '../auth/auth.module';
 import { AppService } from './app.service';
+import { Request } from 'express';
 
 describe('AppController', () => {
   let controller: AppController;
@@ -32,8 +33,13 @@ describe('AppController', () => {
     expect(controller).toBeDefined();
   });
 
+  // it('AppController should return a message', async () => {
+  //   const result = controller.index({} as Response);
+  //   expect(result).toBeDefined();
+  // });
+
   it('AppController should login user', async () => {
-    const result = await controller.login({ user });
+    const result = await controller.login({ user } as Request);
     expect(result).toBeDefined();
     expect(result).toBeInstanceOf(Object);
     expect(result.user).toBeDefined();

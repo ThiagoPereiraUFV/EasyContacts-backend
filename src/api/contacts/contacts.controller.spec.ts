@@ -1,8 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Request } from 'express';
 import { IUser } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { ContactsController } from './contacts.controller';
 import { ContactsService } from './contacts.service';
+import { IContact } from './entities/contact.entity';
 import { mockContact, mockUser } from './utils/contacts.mock';
 
 describe('ContactsController', () => {
@@ -10,6 +12,7 @@ describe('ContactsController', () => {
   let usersService: UsersService;
   let user: IUser;
   const contacts = [];
+  const createdContacts: IContact[] = [];
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -40,8 +43,10 @@ describe('ContactsController', () => {
       const result = await controller.create(contact);
       expect(result).toBeDefined();
       expect(result).toMatchObject(contact);
-      Object.assign(contact, result);
+      createdContacts.push(result);
     }
+
+    user.contacts = createdContacts;
   });
 
   it('ContactsController should return an array of contacts', async () => {
@@ -50,27 +55,33 @@ describe('ContactsController', () => {
   });
 
   it('ContactsController should return a contact', async () => {
-    const result = await controller.findOne(contacts[0].id);
+    const result = await controller.findOne(createdContacts[0].id);
     expect(result).toBeDefined();
-    expect(result).toMatchObject(contacts[0]);
+    expect(result).toMatchObject(createdContacts[0]);
   });
 
   it('ContactsController should return a second contact', async () => {
-    const result = await controller.findOne(contacts[1].id);
+    const result = await controller.findOne(createdContacts[1].id);
     expect(result).toBeDefined();
-    expect(result).toMatchObject(contacts[1]);
+    expect(result).toMatchObject(createdContacts[1]);
+  });
+
+  it('ContactsController should get mine', async () => {
+    const result = await controller.mine({ user } as Request);
+    expect(result).toBeDefined();
+    expect(result).toMatchObject(createdContacts);
   });
 
   it('ContactsController should update a contact', async () => {
-    const result = await controller.update(contacts[0].id, {
-      name: contacts[1].name,
+    const result = await controller.update(createdContacts[0].id, {
+      name: createdContacts[1].name,
     });
     expect(result).toBeDefined();
-    expect(result).toMatchObject({ name: contacts[1].name });
+    expect(result).toMatchObject({ name: createdContacts[1].name });
   });
 
   it('ContactsController should delete contacts', async () => {
-    for (const contact of contacts) {
+    for (const contact of createdContacts) {
       const result = await controller.remove(contact.id);
       expect(result).toBeDefined();
     }

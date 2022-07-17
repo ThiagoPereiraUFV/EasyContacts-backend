@@ -1,3 +1,3 @@
-import { Prisma, Contact } from '@prisma/client';
+import { Contact } from '@prisma/client';
 
-export interface IContact extends Contact, Prisma.ContactInclude {}
+export interface IContact extends Contact {}

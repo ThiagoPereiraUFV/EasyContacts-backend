@@ -46,7 +46,7 @@ export class UsersService {
     return this.repository.delete(params);
   }
 
-  async removeAll() {
-    return this.repository.deleteMany();
-  }
+  // async removeAll() {
+  //   return this.repository.deleteMany();
+  // }
 }

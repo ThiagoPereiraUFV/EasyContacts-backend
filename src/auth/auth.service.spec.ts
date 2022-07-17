@@ -47,6 +47,11 @@ describe('AuthService', () => {
     expect(result).toBeInstanceOf(Object);
   });
 
+  it('AuthService should return null', async () => {
+    const result = await service.validateUser('', '');
+    expect(result).toBeNull();
+  });
+
   it('AuthService should login user', async () => {
     const result = await service.login(user);
     expect(result).toBeDefined();

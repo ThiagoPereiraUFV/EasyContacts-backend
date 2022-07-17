@@ -1,10 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { IUser } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { mockUser } from './utils/users.mock';
 
 describe('UsersService', () => {
   let service: UsersService;
   const users = [mockUser(), mockUser()];
+  const createdUsers: IUser[] = [];
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -23,7 +25,7 @@ describe('UsersService', () => {
       const result = await service.create({ data: user });
       expect(result).toBeDefined();
       expect(result).toMatchObject(user);
-      Object.assign(user, result);
+      createdUsers.push(result);
     }
   });
 
@@ -33,28 +35,28 @@ describe('UsersService', () => {
   });
 
   it('UsersService should return a user', async () => {
-    const result = await service.findOne({ where: { id: users[0].id } });
+    const result = await service.findOne({ where: { id: createdUsers[0].id } });
     expect(result).toBeDefined();
-    expect(result).toMatchObject(users[0]);
+    expect(result).toMatchObject(createdUsers[0]);
   });
 
   it('UsersService should return a second user', async () => {
-    const result = await service.findOne({ where: { id: users[1].id } });
+    const result = await service.findOne({ where: { id: createdUsers[1].id } });
     expect(result).toBeDefined();
-    expect(result).toMatchObject(users[1]);
+    expect(result).toMatchObject(createdUsers[1]);
   });
 
   it('UsersService should update a user', async () => {
     const result = await service.update({
-      where: { id: users[0].id },
-      data: { name: users[1].name },
+      where: { id: createdUsers[0].id },
+      data: { name: users[1].name, password: users[1].password },
     });
     expect(result).toBeDefined();
-    expect(result).toMatchObject({ name: users[1].name });
+    expect(result).toMatchObject({ name: createdUsers[1].name });
   });
 
   it('UsersService should delete users', async () => {
-    for (const user of users) {
+    for (const user of createdUsers) {
       const result = await service.remove({ where: { id: user.id } });
       expect(result).toBeDefined();
     }
