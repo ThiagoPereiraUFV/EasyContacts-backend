@@ -11,6 +11,7 @@ describe('AuthService', () => {
   let service: AuthService;
   let usersService: UsersService;
   let user: IUser;
+  let plainPassword: string;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -27,7 +28,9 @@ describe('AuthService', () => {
     service = module.get<AuthService>(AuthService);
     usersService = module.get<UsersService>(UsersService);
 
-    user = await usersService.create({ data: mockUser() });
+    const mockedUser = mockUser();
+    plainPassword = mockedUser.password;
+    user = await usersService.create({ data: mockedUser });
   });
 
   afterAll(async () => {
@@ -39,7 +42,7 @@ describe('AuthService', () => {
   });
 
   it('AuthService should return user', async () => {
-    const result = await service.validateUser(user.email, user.password);
+    const result = await service.validateUser(user.email, plainPassword);
     expect(result).toBeDefined();
     expect(result).toBeInstanceOf(Object);
   });
