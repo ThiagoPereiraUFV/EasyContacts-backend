@@ -40,7 +40,7 @@ export class EntityExistsValidationPipe implements PipeTransform {
 export class EmailExistsValidationPipe implements PipeTransform {
   constructor(private readonly usersService: UsersService) {}
 
-  async transform(value: any) {
+  async transform(value: { email: string }) {
     if (!value.email) {
       return value;
     }
@@ -61,7 +61,7 @@ export class EmailExistsValidationPipe implements PipeTransform {
 export class UserExistsValidationPipe implements PipeTransform {
   constructor(private readonly usersService: UsersService) {}
 
-  async transform(value: any) {
+  async transform(value: { userId: string }) {
     if (!value.userId) {
       return value;
     }
@@ -92,7 +92,7 @@ export class UserExistsValidationPipe implements PipeTransform {
 export class JoiValidationPipe implements PipeTransform {
   constructor(private schema: ObjectSchema) {}
 
-  transform(value: any) {
+  transform(value: unknown) {
     const { error } = this.schema.validate(value);
 
     if (error) {

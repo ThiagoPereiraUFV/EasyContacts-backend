@@ -1,6 +1,3 @@
-import { User } from '@prisma/client';
-import { IContact } from '../../contacts/entities/contact.entity';
+import { Prisma, User } from '@prisma/client';
 
-export interface IUser extends User {
-  contacts?: IContact[] | undefined;
-}
+export interface IUser extends User, Prisma.UserInclude {}
