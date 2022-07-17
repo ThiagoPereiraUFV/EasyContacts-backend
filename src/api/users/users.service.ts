@@ -21,9 +21,13 @@ export class UsersService {
   }
 
   async create(params: CreateUserInterface) {
-    params.data.password = await this.hashPassword(params.data.password);
-
-    return this.repository.create(params);
+    return this.repository.create({
+      ...params,
+      data: {
+        ...params.data,
+        password: await this.hashPassword(params.data.password),
+      },
+    });
   }
 
   async findAll(params?: FindUserInterface) {

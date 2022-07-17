@@ -47,7 +47,7 @@ describe('ContactsController (e2e)', () => {
       .post('/auth/login')
       .send({
         email: authuser.email,
-        password: authuser.password,
+        password: user.password,
       })
       .expect(201)
       .expect((req) => {
