@@ -8,7 +8,6 @@ import {
   Delete,
   Put,
   UseGuards,
-  Req,
 } from '@nestjs/common';
 import {
   EmailExistsValidationPipe,
@@ -21,7 +20,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { createUserSchema } from './schemas/create-user.schema';
 import { updateUserSchema } from './schemas/update-user.schema';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
-import { Request } from 'express';
 
 @UseGuards(JwtAuthGuard)
 @Controller('users')
@@ -42,11 +40,6 @@ export class UsersController {
   @Get()
   async findAll() {
     return await this.usersService.findAll({ include: { contacts: true } });
-  }
-
-  @Get('me')
-  async me(@Req() req: Request) {
-    return req.user;
   }
 
   @Get(':id')
