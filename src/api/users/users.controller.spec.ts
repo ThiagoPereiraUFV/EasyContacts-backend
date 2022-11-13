@@ -49,12 +49,6 @@ describe('UsersController', () => {
     expect(result).toMatchObject(createdUsers[1]);
   });
 
-  it('UsersController should get me', async () => {
-    const result = await controller.me({ user: createdUsers[0] } as Request);
-    expect(result).toBeDefined();
-    expect(result).toMatchObject(createdUsers[0]);
-  });
-
   it('UsersController should update a user', async () => {
     const result = await controller.update(createdUsers[0].id, {
       name: createdUsers[1].name,

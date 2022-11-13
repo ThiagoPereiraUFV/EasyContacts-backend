@@ -1,10 +1,8 @@
 {
   "name": "easycontacts-backend",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "version": "0.0.0",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -20,7 +18,9 @@
     "test:watch": "yarn test --watch",
     "test:cov": "yarn test --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "yarn test --config ./test/jest-e2e.json"
+    "test:e2e": "yarn test --config ./test/jest-e2e.json",
+    "patch": "yarn version --patch && git push --follow-tags",
+    "release": "yarn version --major && git push --follow-tags"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",

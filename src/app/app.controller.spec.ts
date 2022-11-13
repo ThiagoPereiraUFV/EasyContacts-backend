@@ -21,8 +21,6 @@ describe('AppController', () => {
 
     controller = module.get<AppController>(AppController);
     usersService = module.get<UsersService>(UsersService);
-
-    user = await usersService.create({ data: mockUser() });
   });
 
   afterAll(async () => {
@@ -38,6 +36,12 @@ describe('AppController', () => {
   //   expect(result).toBeDefined();
   // });
 
+  it('AppController should register user', async () => {
+    const result = (user = await controller.register(mockUser()));
+    expect(result).toBeDefined();
+    expect(result).toMatchObject(user);
+  });
+
   it('AppController should login user', async () => {
     const result = await controller.login({ user } as Request);
     expect(result).toBeDefined();
@@ -45,5 +49,11 @@ describe('AppController', () => {
     expect(result.user).toBeDefined();
     expect(result.user).toBeInstanceOf(Object);
     expect(result.jwt).toBeDefined();
+  });
+
+  it('AppController should get me', async () => {
+    const result = await controller.me({ user } as Request);
+    expect(result).toBeDefined();
+    expect(result).toMatchObject(user);
   });
 });
