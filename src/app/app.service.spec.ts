@@ -18,9 +18,11 @@ describe('AppService', () => {
 
   it(`AppService should return "App is running on port ${
     process.env.PORT || 4000
-  }"`, () => {
+  } on ${process.env.NODE_ENV} mode"`, () => {
     expect(service.getRunningMessage()).toBe(
-      `App is running on port ${process.env.PORT || 4000}`,
+      `App is running on port ${process.env.PORT || 4000} on ${
+        process.env.NODE_ENV
+      } mode`,
     );
   });
 });

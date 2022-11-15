@@ -21,15 +21,10 @@ describe('AppController (e2e)', () => {
       .expect(200)
       .expect((req) => {
         expect(req.body.message).toBe(
-          `App is running on port ${process.env.PORT || 4000}`,
+          `App is running on port ${process.env.PORT || 4000} on ${
+            process.env.NODE_ENV
+          } mode`,
         );
       });
-  });
-
-  it('/auth/login (POST) 201', () => {
-    return request(app.getHttpServer())
-      .post('/auth/login')
-      .send({})
-      .expect(401);
   });
 });
