@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Patch,
   Post,
   Req,
   Res,
@@ -19,13 +20,15 @@ import {
 } from '../pipes/validations.pipe';
 import { createUserSchema } from '../api/users/schemas/create-user.schema';
 import { CreateUserDto } from '../api/users/dto/create-user.dto';
+import { UpdateUserDto } from 'src/api/users/dto/update-user.dto';
+import { updateUserSchema } from 'src/api/users/schemas/update-user.schema';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
     private authService: AuthService,
-    private userService: UsersService,
+    private usersService: UsersService,
   ) {}
 
   @Get()
@@ -44,8 +47,22 @@ export class AppController {
     @Body(new JoiValidationPipe(createUserSchema), EmailExistsValidationPipe)
     createUserDto: CreateUserDto,
   ) {
-    return await this.userService.create({
+    return await this.usersService.create({
       data: createUserDto,
+      include: { contacts: true },
+    });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('auth/updateme')
+  async updateme(
+    @Req() req: Request,
+    @Body(new JoiValidationPipe(updateUserSchema), EmailExistsValidationPipe)
+    updateUserDto: UpdateUserDto,
+  ) {
+    return await this.usersService.update({
+      where: { id: req.user.id },
+      data: updateUserDto,
       include: { contacts: true },
     });
   }
