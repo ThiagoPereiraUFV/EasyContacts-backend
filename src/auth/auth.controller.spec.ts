@@ -7,7 +7,6 @@ import { AuthModule } from './auth.module';
 
 describe('AuthController', () => {
   let controller: AuthController;
-  let usersService: UsersService;
   let user: IUser;
 
   beforeAll(async () => {
@@ -18,11 +17,6 @@ describe('AuthController', () => {
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
-    usersService = module.get<UsersService>(UsersService);
-  });
-
-  afterAll(async () => {
-    await usersService.remove({ where: { id: user.id } });
   });
 
   it('AuthController should be defined', () => {
@@ -51,6 +45,12 @@ describe('AuthController', () => {
 
   it('AuthController should get me', async () => {
     const result = await controller.me(user);
+    expect(result).toBeDefined();
+    expect(result).toMatchObject(user);
+  });
+
+  it('AuthController should remove me', async () => {
+    const result = await controller.removeme(user);
     expect(result).toBeDefined();
     expect(result).toMatchObject(user);
   });
