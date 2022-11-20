@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { UsersModule } from './../src/api/users/users.module';
 import { mockUser } from '../src/api/users/utils/users.mock';
-import { AppModule } from '../src/app.module';
+import { AppModule } from '../src/app/app.module';
 import { UsersService } from '../src/api/users/users.service';
 import { IUser } from '../src/api/users/entities/user.entity';
 
