@@ -8,7 +8,6 @@ import {
   Delete,
   Put,
   UseGuards,
-  Req,
 } from '@nestjs/common';
 import {
   EntityExistsValidationPipe,
@@ -21,7 +20,8 @@ import { UpdateContactDto } from './dto/update-contact.dto';
 import { createContactSchema } from './schemas/create-contact.schema';
 import { updateContactSchema } from './schemas/update-contact.schema';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
-import { Request } from 'express';
+import { IUser } from '../users/entities/user.entity';
+import { User } from '../../decorators/user.decorator';
 
 @UseGuards(JwtAuthGuard)
 @Controller('contacts')
@@ -45,8 +45,8 @@ export class ContactsController {
   }
 
   @Get('mine')
-  async mine(@Req() req: Request) {
-    return req.user.contacts;
+  async mine(@User() user: IUser) {
+    return user.contacts;
   }
 
   @Get(':id')

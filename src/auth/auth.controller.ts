@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Patch,
-  Post,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
-import { Request } from 'express';
+import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
@@ -20,6 +11,8 @@ import { createUserSchema } from '../api/users/schemas/create-user.schema';
 import { CreateUserDto } from '../api/users/dto/create-user.dto';
 import { UpdateUserDto } from '../api/users/dto/update-user.dto';
 import { updateMeSchema } from './schemas/update-me.schema';
+import { IUser } from '../api/users/entities/user.entity';
+import { User } from '../decorators/user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -30,8 +23,8 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Req() req: Request) {
-    return await this.authService.login(req.user);
+  async login(@User() user: IUser) {
+    return await this.authService.login(user);
   }
 
   @Post('register')
@@ -48,12 +41,12 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Patch('updateme')
   async updateme(
-    @Req() req: Request,
+    @User() user: IUser,
     @Body(new JoiValidationPipe(updateMeSchema), EmailExistsValidationPipe)
     updateUserDto: UpdateUserDto,
   ) {
     return await this.usersService.update({
-      where: { id: req.user.id },
+      where: { id: user.id },
       data: updateUserDto,
       include: { contacts: true },
     });
@@ -61,7 +54,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  async me(@Req() req: Request) {
-    return req.user;
+  async me(@User() user: IUser) {
+    return user;
   }
 }

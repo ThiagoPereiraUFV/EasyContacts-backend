@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Request } from 'express';
 import { IUser } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { ContactsController } from './contacts.controller';
@@ -67,7 +66,7 @@ describe('ContactsController', () => {
   });
 
   it('ContactsController should get mine', async () => {
-    const result = await controller.mine({ user } as Request);
+    const result = await controller.mine(user);
     expect(result).toBeDefined();
     expect(result).toMatchObject(createdContacts);
   });
