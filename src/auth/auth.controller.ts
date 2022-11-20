@@ -19,7 +19,7 @@ import {
 import { createUserSchema } from '../api/users/schemas/create-user.schema';
 import { CreateUserDto } from '../api/users/dto/create-user.dto';
 import { UpdateUserDto } from '../api/users/dto/update-user.dto';
-import { updateUserSchema } from '../api/users/schemas/update-user.schema';
+import { updateMeSchema } from './schemas/update-me.schema';
 
 @Controller('auth')
 export class AuthController {
@@ -49,7 +49,7 @@ export class AuthController {
   @Patch('updateme')
   async updateme(
     @Req() req: Request,
-    @Body(new JoiValidationPipe(updateUserSchema), EmailExistsValidationPipe)
+    @Body(new JoiValidationPipe(updateMeSchema), EmailExistsValidationPipe)
     updateUserDto: UpdateUserDto,
   ) {
     return await this.usersService.update({
