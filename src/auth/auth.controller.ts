@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Patch,
   Post,
@@ -69,6 +70,15 @@ export class AuthController {
     return await this.usersService.update({
       where: { id: user.id },
       data: updateUserDto,
+      include: { contacts: true },
+    });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('removeme')
+  async removeme(@User() user: IUser) {
+    return await this.usersService.remove({
+      where: { id: user.id },
       include: { contacts: true },
     });
   }
