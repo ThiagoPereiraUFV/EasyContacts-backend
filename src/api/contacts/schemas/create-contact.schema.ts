@@ -5,7 +5,7 @@ const schema = {
   id: Joi.string().hex().length(24).optional(),
   name: Joi.string().required(),
   surname: Joi.string().required(),
-  userId: Joi.string().hex().length(24).required(),
+  userId: Joi.string().hex().length(24).optional(),
   phone: Joi.string(),
   email: Joi.string().email(),
   address: Joi.string(),
