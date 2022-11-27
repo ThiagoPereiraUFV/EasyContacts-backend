@@ -39,6 +39,11 @@ export class ContactsController {
     });
   }
 
+  @Get('mine')
+  async mine(@User() user: IUser) {
+    return user.contacts;
+  }
+
   @Get()
   async findAll() {
     return await this.contactsService.findAll({ include: { user: true } });
@@ -104,11 +109,6 @@ export class ContactsController {
       data: { ...createContactDto, userId: user.id },
       include: { user: true },
     });
-  }
-
-  @Get('mine')
-  async mine(@User() user: IUser) {
-    return user.contacts;
   }
 
   @Patch('mine/:id')
