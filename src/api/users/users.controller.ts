@@ -72,7 +72,7 @@ export class UsersController {
     @Param('id', new EntityExistsValidationPipe(new UsersService()))
     id: string,
     @Body(new JoiValidationPipe(createUserSchema), EmailExistsValidationPipe)
-    replaceUserDto: UpdateUserDto,
+    replaceUserDto: CreateUserDto,
   ) {
     return await this.usersService.update({
       where: { id },
