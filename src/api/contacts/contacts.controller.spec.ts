@@ -3,6 +3,7 @@ import { IUser } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { ContactsController } from './contacts.controller';
 import { ContactsService } from './contacts.service';
+import { CreateContactDto } from './dto/create-contact.dto';
 import { IContact } from './entities/contact.entity';
 import { mockContact, mockUser } from './utils/contacts.mock';
 
@@ -10,7 +11,7 @@ describe('ContactsController', () => {
   let controller: ContactsController;
   let usersService: UsersService;
   let user: IUser;
-  const contacts = [];
+  const contacts: CreateContactDto[] = [];
   const createdContacts: IContact[] = [];
 
   beforeAll(async () => {
@@ -65,18 +66,26 @@ describe('ContactsController', () => {
     expect(result).toMatchObject(createdContacts[1]);
   });
 
-  it('ContactsController should get mine', async () => {
-    const result = await controller.mine(user);
-    expect(result).toBeDefined();
-    expect(result).toMatchObject(createdContacts);
-  });
-
   it('ContactsController should update a contact', async () => {
     const result = await controller.update(createdContacts[0].id, {
-      name: createdContacts[1].name,
+      name: contacts[1].name,
     });
     expect(result).toBeDefined();
-    expect(result).toMatchObject({ name: createdContacts[1].name });
+    expect(result).toMatchObject({ name: contacts[1].name });
+  });
+
+  it('ContactsController should replace a contact', async () => {
+    const result = await controller.replace(createdContacts[0].id, {
+      name: contacts[0].name,
+      surname: contacts[1].surname,
+      userId: user.id,
+    });
+    expect(result).toBeDefined();
+    expect(result).toMatchObject({
+      name: contacts[0].name,
+      surname: contacts[1].surname,
+      userId: user.id,
+    });
   });
 
   it('ContactsController should delete contacts', async () => {
@@ -84,5 +93,63 @@ describe('ContactsController', () => {
       const result = await controller.remove(contact.id);
       expect(result).toBeDefined();
     }
+
+    createdContacts.length = 0;
+  });
+
+  it('ContactsController should create an array of mine contacts', async () => {
+    for (const contact of contacts) {
+      const result = await controller.createMine(contact, user);
+      expect(result).toBeDefined();
+      expect(result).toMatchObject(contact);
+      createdContacts.push(result);
+    }
+
+    user.contacts = createdContacts;
+  });
+
+  it('ContactsController should get mine', async () => {
+    const result = await controller.mine(user);
+    expect(result).toBeDefined();
+    expect(result).toMatchObject(createdContacts);
+  });
+
+  it('ContactsController should update mine contact', async () => {
+    const result = await controller.updateMine(
+      createdContacts[0].id,
+      {
+        name: contacts[1].name,
+      },
+      user,
+    );
+    expect(result).toBeDefined();
+    expect(result).toMatchObject({ name: contacts[1].name });
+  });
+
+  it('ContactsController should replace mine contact', async () => {
+    const result = await controller.replaceMine(
+      createdContacts[0].id,
+      {
+        name: contacts[0].name,
+        surname: contacts[1].surname,
+        userId: user.id,
+      },
+      user,
+    );
+    expect(result).toBeDefined();
+    expect(result).toMatchObject({
+      name: contacts[0].name,
+      surname: contacts[1].surname,
+      userId: user.id,
+    });
+  });
+
+  it('ContactsController should delete contacts', async () => {
+    for (const contact of createdContacts) {
+      const result = await controller.removeMine(contact.id);
+      expect(result).toBeDefined();
+    }
+
+    createdContacts.length = 0;
   });
 });
