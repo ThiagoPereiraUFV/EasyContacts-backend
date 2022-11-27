@@ -44,11 +44,6 @@ export class ContactsController {
     return await this.contactsService.findAll({ include: { user: true } });
   }
 
-  @Get('mine')
-  async mine(@User() user: IUser) {
-    return user.contacts;
-  }
-
   @Get(':id')
   async findOne(
     @Param('id', new EntityExistsValidationPipe(new ContactsService()))
@@ -79,7 +74,7 @@ export class ContactsController {
     @Param('id', new EntityExistsValidationPipe(new ContactsService()))
     id: string,
     @Body(new JoiValidationPipe(createContactSchema), UserExistsValidationPipe)
-    replaceContactDto: UpdateContactDto,
+    replaceContactDto: CreateContactDto,
   ) {
     return await this.contactsService.update({
       where: { id },
@@ -90,6 +85,64 @@ export class ContactsController {
 
   @Delete(':id')
   async remove(
+    @Param('id', new EntityExistsValidationPipe(new ContactsService()))
+    id: string,
+  ) {
+    return await this.contactsService.remove({
+      where: { id },
+      include: { user: true },
+    });
+  }
+
+  @Post('mine')
+  async createMine(
+    @Body(new JoiValidationPipe(createContactSchema), UserExistsValidationPipe)
+    createContactDto: CreateContactDto,
+    @User() user: IUser,
+  ) {
+    return await this.contactsService.create({
+      data: { ...createContactDto, userId: user.id },
+      include: { user: true },
+    });
+  }
+
+  @Get('mine')
+  async mine(@User() user: IUser) {
+    return user.contacts;
+  }
+
+  @Patch('mine/:id')
+  async updateMine(
+    @Param('id', new EntityExistsValidationPipe(new ContactsService()))
+    id: string,
+    @Body(new JoiValidationPipe(updateContactSchema), UserExistsValidationPipe)
+    updateContactDto: UpdateContactDto,
+    @User() user: IUser,
+  ) {
+    return await this.contactsService.update({
+      where: { id },
+      data: { ...updateContactDto, userId: user.id },
+      include: { user: true },
+    });
+  }
+
+  @Put('mine/:id')
+  async replaceMine(
+    @Param('id', new EntityExistsValidationPipe(new ContactsService()))
+    id: string,
+    @Body(new JoiValidationPipe(updateContactSchema), UserExistsValidationPipe)
+    replaceContactDto: CreateContactDto,
+    @User() user: IUser,
+  ) {
+    return await this.contactsService.update({
+      where: { id },
+      data: { ...replaceContactDto, userId: user.id },
+      include: { user: true },
+    });
+  }
+
+  @Delete('mine/:id')
+  async removeMine(
     @Param('id', new EntityExistsValidationPipe(new ContactsService()))
     id: string,
   ) {
