@@ -33,7 +33,7 @@
     "bcrypt": "^5.0.1",
     "bson": "^4.6.4",
     "helmet": "^5.1.0",
-    "joi": "^17.6.0",
+    "joi": "^17.7.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
