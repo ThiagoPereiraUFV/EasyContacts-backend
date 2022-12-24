@@ -11,8 +11,12 @@ const schema = {
   address: Joi.string(),
   annotations: Joi.string(),
   avatar: Joi.string().uri(),
-  createdAt: Joi.date().optional(),
-  updatedAt: Joi.date().optional(),
+  createdAt: Joi.alternatives()
+    .try(Joi.string().isoDate(), Joi.date())
+    .optional(),
+  updatedAt: Joi.alternatives()
+    .try(Joi.string().isoDate(), Joi.date())
+    .optional(),
 };
 
 const createContactSchema = Joi.object<CreateContactDto, true>(schema);
