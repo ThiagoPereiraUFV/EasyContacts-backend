@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  main:
+    container_name: api-easycontacts
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - ${PORT}:${PORT}
+      - 4001:4001
+    command: yarn run start:dev
+    env_file:
+      - .env
