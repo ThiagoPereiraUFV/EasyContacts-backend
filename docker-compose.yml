@@ -11,7 +11,7 @@ services:
       - /usr/src/app/node_modules
     ports:
       - ${PORT}:${PORT}
-      - 4001:4001
-    command: yarn run start:dev
+      - 9229:9229
+    command: yarn run start:dev --debug 0.0.0.0:9229
     env_file:
       - .env
