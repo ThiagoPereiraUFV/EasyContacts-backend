@@ -13,5 +13,6 @@ services:
       - ${PORT}:${PORT}
       - 9229:9229
     command: yarn run start:dev --debug 0.0.0.0:9229
+    network_mode: host
     env_file:
       - .env

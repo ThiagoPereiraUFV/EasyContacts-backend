@@ -14,7 +14,7 @@ COPY --chown=node:node . .
 
 RUN yarn prisma generate
 
-RUN yarn run build
+# RUN yarn run build
 
 USER node
 
