@@ -29,11 +29,15 @@ describe('AuthController (e2e)', () => {
       .expect(400);
   });
 
-  it('/auth/updateme (POST) 401', () => {
+  it('/auth/updateme (PATCH) 401', () => {
     return request(app.getHttpServer())
       .patch('/auth/updateme')
       .send({})
       .expect(401);
+  });
+
+  it('/auth/removeme (DELETE) 401', () => {
+    return request(app.getHttpServer()).delete('/auth/removeme').expect(401);
   });
 
   it('/auth/me (GET) 401', () => {

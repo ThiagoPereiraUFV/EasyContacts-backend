@@ -4,11 +4,10 @@ import { AuthController } from './auth.controller';
 import { mockUser } from '../api/users/utils/users.mock';
 import { IUser } from '../api/users/entities/user.entity';
 import { AuthModule } from './auth.module';
-import { Request } from 'express';
+import { BadRequestException } from '@nestjs/common';
 
 describe('AuthController', () => {
   let controller: AuthController;
-  let usersService: UsersService;
   let user: IUser;
 
   beforeAll(async () => {
@@ -19,21 +18,11 @@ describe('AuthController', () => {
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
-    usersService = module.get<UsersService>(UsersService);
-  });
-
-  afterAll(async () => {
-    await usersService.remove({ where: { id: user.id } });
   });
 
   it('AuthController should be defined', () => {
     expect(controller).toBeDefined();
   });
-
-  // it('AuthController should return a message', async () => {
-  //   const result = controller.index({} as Response);
-  //   expect(result).toBeDefined();
-  // });
 
   it('AuthController should register user', async () => {
     const result = (user = await controller.register(mockUser()));
@@ -42,7 +31,7 @@ describe('AuthController', () => {
   });
 
   it('AuthController should login user', async () => {
-    const result = await controller.login({ user } as Request);
+    const result = await controller.login(user);
     expect(result).toBeDefined();
     expect(result).toBeInstanceOf(Object);
     expect(result.user).toBeDefined();
@@ -50,8 +39,31 @@ describe('AuthController', () => {
     expect(result.jwt).toBeDefined();
   });
 
+  it('AuthController should update me', async () => {
+    const result = (user = await controller.updateme(user, mockUser()));
+    expect(result).toBeDefined();
+    expect(result).toMatchObject(user);
+  });
+
+  it('AuthController should not update me', async () => {
+    try {
+      const badUser = { ...mockUser(), oldPassword: 'badpassword' };
+      const result = await controller.updateme(user, badUser);
+      expect(result).not.toBeDefined();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err).toBeInstanceOf(BadRequestException);
+    }
+  });
+
   it('AuthController should get me', async () => {
-    const result = await controller.me({ user } as Request);
+    const result = await controller.me(user);
+    expect(result).toBeDefined();
+    expect(result).toMatchObject(user);
+  });
+
+  it('AuthController should remove me', async () => {
+    const result = await controller.removeme(user);
     expect(result).toBeDefined();
     expect(result).toMatchObject(user);
   });

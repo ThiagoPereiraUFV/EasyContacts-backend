@@ -15,7 +15,10 @@ export class AuthService {
   async validateUser(email: string, password: string): Promise<IUser | null> {
     const user = await this.usersService.findOne({ where: { email } });
 
-    if (user && bcrypt.compareSync(password, user.password) === true) {
+    if (
+      user &&
+      (await this.comparePassword(password, user.password)) === true
+    ) {
       return user;
     }
 
@@ -29,5 +32,9 @@ export class AuthService {
       user,
       jwt: this.jwtService.sign(payload),
     };
+  }
+
+  async comparePassword(password: string, hash: string) {
+    return await bcrypt.compare(password, hash);
   }
 }

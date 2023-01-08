@@ -8,8 +8,12 @@ const schema = {
   password: Joi.string().required(),
   avatar: Joi.string().uri(),
   contacts: Joi.array().items(Joi.string().hex().length(24)).optional(),
-  createdAt: Joi.date().optional(),
-  updatedAt: Joi.date().optional(),
+  createdAt: Joi.alternatives()
+    .try(Joi.string().isoDate(), Joi.date())
+    .optional(),
+  updatedAt: Joi.alternatives()
+    .try(Joi.string().isoDate(), Joi.date())
+    .optional(),
 };
 
 const createUserSchema = Joi.object<CreateUserDto, true>(schema);

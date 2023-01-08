@@ -50,11 +50,24 @@ describe('UsersController', () => {
 
   it('UsersController should update a user', async () => {
     const result = await controller.update(createdUsers[0].id, {
-      name: createdUsers[1].name,
+      name: users[1].name,
       password: users[1].password,
     });
     expect(result).toBeDefined();
-    expect(result).toMatchObject({ name: createdUsers[1].name });
+    expect(result).toMatchObject({ name: users[1].name });
+  });
+
+  it('UsersController should update a user', async () => {
+    const result = await controller.replace(createdUsers[0].id, {
+      name: users[0].name,
+      email: users[0].email,
+      password: users[0].password,
+    });
+    expect(result).toBeDefined();
+    expect(result).toMatchObject({
+      name: users[0].name,
+      email: users[0].email,
+    });
   });
 
   it('UsersController should delete users', async () => {

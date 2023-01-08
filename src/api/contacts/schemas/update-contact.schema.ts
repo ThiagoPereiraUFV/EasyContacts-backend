@@ -1,7 +1,8 @@
 import * as Joi from 'joi';
-import { UpdateContactDto } from '../dto/update-contact.dto';
+import { CreateContactDto } from '../dto/create-contact.dto';
 
 const schema = {
+  id: Joi.string().hex().length(24).optional(),
   name: Joi.string(),
   surname: Joi.string(),
   userId: Joi.string().hex().length(24),
@@ -10,10 +11,14 @@ const schema = {
   address: Joi.string(),
   annotations: Joi.string(),
   avatar: Joi.string().uri(),
-  createdAt: Joi.date().optional(),
-  updatedAt: Joi.date().optional(),
+  createdAt: Joi.alternatives()
+    .try(Joi.string().isoDate(), Joi.date())
+    .optional(),
+  updatedAt: Joi.alternatives()
+    .try(Joi.string().isoDate(), Joi.date())
+    .optional(),
 };
 
-const updateContactSchema = Joi.object<UpdateContactDto, true>(schema);
+const updateContactSchema = Joi.object<CreateContactDto, true>(schema);
 
 export { updateContactSchema };

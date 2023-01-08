@@ -1,13 +1,13 @@
 import {
+  BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Patch,
   Post,
-  Req,
   UseGuards,
 } from '@nestjs/common';
-import { Request } from 'express';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
@@ -18,8 +18,10 @@ import {
 } from '../pipes/validations.pipe';
 import { createUserSchema } from '../api/users/schemas/create-user.schema';
 import { CreateUserDto } from '../api/users/dto/create-user.dto';
-import { UpdateUserDto } from '../api/users/dto/update-user.dto';
-import { updateUserSchema } from '../api/users/schemas/update-user.schema';
+import { updateMeSchema } from './schemas/update-me.schema';
+import { IUser } from '../api/users/entities/user.entity';
+import { User } from '../decorators/user.decorator';
+import { UpdateMeDto } from './dto/update-me.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -30,8 +32,8 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Req() req: Request) {
-    return await this.authService.login(req.user);
+  async login(@User() user: IUser) {
+    return await this.authService.login(user);
   }
 
   @Post('register')
@@ -48,20 +50,42 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Patch('updateme')
   async updateme(
-    @Req() req: Request,
-    @Body(new JoiValidationPipe(updateUserSchema), EmailExistsValidationPipe)
-    updateUserDto: UpdateUserDto,
+    @User() user: IUser,
+    @Body(new JoiValidationPipe(updateMeSchema), EmailExistsValidationPipe)
+    updateUserDto: UpdateMeDto,
   ) {
+    if (
+      updateUserDto.oldPassword &&
+      updateUserDto.password &&
+      !(await this.authService.comparePassword(
+        updateUserDto.oldPassword,
+        user.password,
+      ))
+    ) {
+      throw new BadRequestException('Password does not match');
+    }
+
+    delete updateUserDto.oldPassword;
+
     return await this.usersService.update({
-      where: { id: req.user.id },
+      where: { id: user.id },
       data: updateUserDto,
       include: { contacts: true },
     });
   }
 
   @UseGuards(JwtAuthGuard)
+  @Delete('removeme')
+  async removeme(@User() user: IUser) {
+    return await this.usersService.remove({
+      where: { id: user.id },
+      include: { contacts: true },
+    });
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('me')
-  async me(@Req() req: Request) {
-    return req.user;
+  async me(@User() user: IUser) {
+    return user;
   }
 }
