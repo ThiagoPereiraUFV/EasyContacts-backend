@@ -67,7 +67,7 @@
     "faker-br": "^0.4.1",
     "jest": "28.0.3",
     "prettier": "^2.8.2",
-    "prisma": "^4.7.1",
+    "prisma": "^4.8.1",
     "source-map-support": "^0.5.20",
     "supertest": "^6.3.3",
     "ts-jest": "28.0.1",
