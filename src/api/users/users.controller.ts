@@ -20,13 +20,30 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { createUserSchema } from './schemas/create-user.schema';
 import { updateUserSchema } from './schemas/update-user.schema';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
+@ApiTags('users')
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @ApiOperation({ description: 'Create a new user' })
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+  })
+  @ApiBadRequestResponse({ description: 'The parameters are invalid.' })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async create(
     @Body(new JoiValidationPipe(createUserSchema), EmailExistsValidationPipe)
     createUserDto: CreateUserDto,
@@ -38,11 +55,24 @@ export class UsersController {
   }
 
   @Get()
+  @ApiOperation({ description: 'Get all users' })
+  @ApiOkResponse({
+    description: 'The records has been successfully fetched.',
+  })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async findAll() {
     return await this.usersService.findAll({ include: { contacts: true } });
   }
 
   @Get(':id')
+  @ApiOperation({ description: 'Get a user by id' })
+  @ApiOkResponse({
+    description: 'The record has been successfully fetched.',
+  })
+  @ApiBadRequestResponse({ description: 'The parameters are invalid.' })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async findOne(
     @Param('id', new EntityExistsValidationPipe(new UsersService()))
     id: string,
@@ -54,6 +84,13 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @ApiOperation({ description: 'Partially update a user by id' })
+  @ApiOkResponse({
+    description: 'The record has been successfully updated.',
+  })
+  @ApiBadRequestResponse({ description: 'The parameters are invalid.' })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async update(
     @Param('id', new EntityExistsValidationPipe(new UsersService()))
     id: string,
@@ -68,6 +105,13 @@ export class UsersController {
   }
 
   @Put(':id')
+  @ApiOperation({ description: 'Update a user by id' })
+  @ApiOkResponse({
+    description: 'The record has been successfully updated.',
+  })
+  @ApiBadRequestResponse({ description: 'The parameters are invalid.' })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async replace(
     @Param('id', new EntityExistsValidationPipe(new UsersService()))
     id: string,
@@ -82,6 +126,13 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @ApiOperation({ description: 'Delete a user by id' })
+  @ApiOkResponse({
+    description: 'The record has been successfully deleted.',
+  })
+  @ApiBadRequestResponse({ description: 'The parameters are invalid.' })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async remove(
     @Param('id', new EntityExistsValidationPipe(new UsersService()))
     id: string,

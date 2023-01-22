@@ -22,13 +22,30 @@ import { updateContactSchema } from './schemas/update-contact.schema';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 import { IUser } from '../users/entities/user.entity';
 import { User } from '../../decorators/user.decorator';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
+@ApiTags('contacts')
 @UseGuards(JwtAuthGuard)
 @Controller('contacts')
 export class ContactsController {
   constructor(private readonly contactsService: ContactsService) {}
 
   @Post()
+  @ApiOperation({ description: 'Create a new contact' })
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+  })
+  @ApiBadRequestResponse({ description: 'The parameters are invalid.' })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async create(
     @Body(new JoiValidationPipe(createContactSchema), UserExistsValidationPipe)
     createContactDto: CreateContactDto,
@@ -40,16 +57,35 @@ export class ContactsController {
   }
 
   @Get('mine')
+  @ApiOperation({ description: 'Get all my contacts' })
+  @ApiOkResponse({
+    description: 'The records has been successfully fetched.',
+  })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async mine(@User() user: IUser) {
     return user.contacts;
   }
 
   @Get()
+  @ApiOperation({ description: 'Get all contacts' })
+  @ApiOkResponse({
+    description: 'The records has been successfully fetched.',
+  })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async findAll() {
     return await this.contactsService.findAll({ include: { user: true } });
   }
 
   @Get(':id')
+  @ApiOperation({ description: 'Get a contact by id' })
+  @ApiOkResponse({
+    description: 'The record has been successfully fetched.',
+  })
+  @ApiBadRequestResponse({ description: 'The parameters are invalid.' })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async findOne(
     @Param('id', new EntityExistsValidationPipe(new ContactsService()))
     id: string,
@@ -61,6 +97,13 @@ export class ContactsController {
   }
 
   @Patch(':id')
+  @ApiOperation({ description: 'Partially update a contact by id' })
+  @ApiOkResponse({
+    description: 'The record has been successfully updated.',
+  })
+  @ApiBadRequestResponse({ description: 'The parameters are invalid.' })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async update(
     @Param('id', new EntityExistsValidationPipe(new ContactsService()))
     id: string,
@@ -75,6 +118,13 @@ export class ContactsController {
   }
 
   @Put(':id')
+  @ApiOperation({ description: 'Update a contact by id' })
+  @ApiOkResponse({
+    description: 'The record has been successfully updated.',
+  })
+  @ApiBadRequestResponse({ description: 'The parameters are invalid.' })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async replace(
     @Param('id', new EntityExistsValidationPipe(new ContactsService()))
     id: string,
@@ -89,6 +139,13 @@ export class ContactsController {
   }
 
   @Delete(':id')
+  @ApiOperation({ description: 'Delete a contact by id' })
+  @ApiOkResponse({
+    description: 'The record has been successfully deleted.',
+  })
+  @ApiBadRequestResponse({ description: 'The parameters are invalid.' })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async remove(
     @Param('id', new EntityExistsValidationPipe(new ContactsService()))
     id: string,
@@ -100,6 +157,13 @@ export class ContactsController {
   }
 
   @Post('mine')
+  @ApiOperation({ description: 'Create a new contact to me' })
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+  })
+  @ApiBadRequestResponse({ description: 'The parameters are invalid.' })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async createMine(
     @Body(new JoiValidationPipe(createContactSchema), UserExistsValidationPipe)
     createContactDto: CreateContactDto,
@@ -112,6 +176,13 @@ export class ContactsController {
   }
 
   @Patch('mine/:id')
+  @ApiOperation({ description: 'Partially update my contact by id' })
+  @ApiOkResponse({
+    description: 'The record has been successfully updated.',
+  })
+  @ApiBadRequestResponse({ description: 'The parameters are invalid.' })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async updateMine(
     @Param('id', new EntityExistsValidationPipe(new ContactsService()))
     id: string,
@@ -127,6 +198,13 @@ export class ContactsController {
   }
 
   @Put('mine/:id')
+  @ApiOperation({ description: 'Update my contact by id' })
+  @ApiOkResponse({
+    description: 'The record has been successfully updated.',
+  })
+  @ApiBadRequestResponse({ description: 'The parameters are invalid.' })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async replaceMine(
     @Param('id', new EntityExistsValidationPipe(new ContactsService()))
     id: string,
@@ -142,6 +220,13 @@ export class ContactsController {
   }
 
   @Delete('mine/:id')
+  @ApiOperation({ description: 'Delete my contact by id' })
+  @ApiOkResponse({
+    description: 'The record has been successfully deleted.',
+  })
+  @ApiBadRequestResponse({ description: 'The parameters are invalid.' })
+  @ApiUnauthorizedResponse({ description: 'Invalid token.' })
+  @ApiForbiddenResponse({ description: 'Forbidden path.' })
   async removeMine(
     @Param('id', new EntityExistsValidationPipe(new ContactsService()))
     id: string,
