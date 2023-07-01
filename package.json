@@ -31,7 +31,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^8.0.0",
-    "@nestjs/swagger": "^6.1.4",
+    "@nestjs/swagger": "^7.0.12",
     "@ntegral/nestjs-sentry": "^4.0.0",
     "@prisma/client": "^4.9.0",
     "@sentry/node": "^7.35.0",
