@@ -33,7 +33,7 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/swagger": "^6.1.4",
     "@ntegral/nestjs-sentry": "^4.0.0",
-    "@prisma/client": "^4.9.0",
+    "@prisma/client": "^4.16.2",
     "@sentry/node": "^7.35.0",
     "bcrypt": "^5.0.1",
     "bson": "^4.7.2",
