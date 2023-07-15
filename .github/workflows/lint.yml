@@ -5,21 +5,22 @@ on:
     branches:
       - develop
   pull_request:
-    branches: 
+    branches:
       - develop
 
 jobs:
   lint:
     strategy:
       matrix:
-        node: ['14']
+        node: ['lts/*']
+        platform: ['ubuntu-latest', macos-latest]
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.platform }}
 
     env:
       DATABASE_URL: "mongodb+srv://tester:testerpassword@easycontacts.yvbgh.mongodb.net/test?retryWrites=true&w=majority&maxPoolSize=1"
 
-    name: Lint node ${{ matrix.node }}
+    name: Lint node ${{ matrix.node }} ${{ matrix.platform }}
 
     steps:
       - name: Checkout Repository

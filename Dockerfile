@@ -2,7 +2,7 @@
 # BUILD FOR LOCAL DEVELOPMENT
 ###################
 
-FROM node:14.20.0-alpine3.15 As development
+FROM node:lts-alpine As development
 
 WORKDIR /usr/src/app
 
@@ -22,7 +22,7 @@ USER node
 # BUILD FOR PRODUCTION
 ###################
 
-FROM node:14.20.0-alpine3.15 As build
+FROM node:lts-alpine As build
 
 WORKDIR /usr/src/app
 
@@ -42,7 +42,7 @@ USER node
 # PRODUCTION
 ###################
 
-FROM node:14.20.0-alpine3.15 As production
+FROM node:lts-alpine As production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
