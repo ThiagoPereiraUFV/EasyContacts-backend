@@ -13,6 +13,7 @@
     "start:prod": "NODE_ENV=production node dist/src/main",
     "docker:up": "docker-compose up --build -V",
     "docker:down": "docker-compose down",
+    "docker:pull": "docker-compose pull",
     "lint": "yarn tsc --noEmit && eslint \"{src,apps,libs,test}/**/*.ts\"",
     "lint:ci": "yarn tsc --noEmit && eslint \"{src,apps,libs,test}/**/*.ts\" --max-warnings=0",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
