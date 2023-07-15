@@ -5,14 +5,14 @@ on:
     branches:
       - develop
   pull_request:
-    branches: 
+    branches:
       - develop
 
 jobs:
   test:
     strategy:
       matrix:
-        node: ['14']
+        node: ['lts/*']
         platform: ['ubuntu-latest', macos-latest]
 
     runs-on: ${{ matrix.platform }}
@@ -20,7 +20,7 @@ jobs:
     env:
       DATABASE_URL: "mongodb+srv://tester:testerpassword@easycontacts.yvbgh.mongodb.net/test?retryWrites=true&w=majority&maxPoolSize=1"
 
-    name: Node ${{ matrix.node }} ${{ matrix.platform }}
+    name: Test node ${{ matrix.node }} ${{ matrix.platform }}
 
     steps:
       - name: Checkout Repository
