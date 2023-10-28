@@ -9,9 +9,9 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    ports:
-      - ${PORT}:${PORT}
-      - 9229:9229
+    # ports:
+    #   - ${PORT}:${PORT}
+    #   - 9229:9229
     command: sh -c "yarn && yarn run start:dev --debug 0.0.0.0:9229"
     network_mode: host
     env_file:
